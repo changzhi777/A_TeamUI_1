@@ -1,3 +1,4 @@
+import React from 'react'
 import { Navigate } from '@tanstack/react-router'
 import { useAuthStore } from '@/stores/auth-store'
 import { useEffect } from 'react'
@@ -20,15 +21,8 @@ export function ProtectedRoute({
   const { isAuthenticated, isAdmin } = useAuthStore()
 
   useEffect(() => {
-    // 未登录用户重定向到登录页
-    if (!isAuthenticated) {
-      return <Navigate to="/sign-in" />
-    }
-
-    // 需要管理员权限但用户不是管理员
-    if (requireAdmin && !isAdmin()) {
-      return <Navigate to="/errors/forbidden" />
-    }
+    // 未登录用户重定向到登录页 - 由条件渲染处理
+    // 需要管理员权限但用户不是管理员 - 由条件渲染处理
   }, [isAuthenticated, isAdmin, requireAdmin])
 
   // 未登录时显示加载状态或 fallback

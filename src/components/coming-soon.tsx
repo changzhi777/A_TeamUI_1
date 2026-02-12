@@ -1,3 +1,4 @@
+import React from 'react'
 import { Telescope } from 'lucide-react'
 
 export function ComingSoon() {

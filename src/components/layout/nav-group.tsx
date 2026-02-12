@@ -1,3 +1,4 @@
+import React from 'react'
 import { type ReactNode, useState } from 'react'
 import { Link, useLocation, useNavigate } from '@tanstack/react-router'
 import { ChevronRight } from 'lucide-react'
@@ -92,7 +93,7 @@ function SidebarMenuLink({ item, href }: { item: NavLink; href: string }) {
       // 构建正确的项目路由
       e.preventDefault()
       const projectRoute = currentProjectId ? `/projects/${currentProjectId}${getProjectPath(item.url || '')}` : getProjectPath(item.url || '')
-      navigate({ to: () => projectRoute })
+      navigate({ to: projectRoute as any })
       setOpenMobile(false)
     } else {
       setOpenMobile(false)

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -37,19 +37,11 @@ export function ForgotPasswordForm({
     defaultValues: { email: '' },
   })
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    const result = await resetPassword(data.email)
-
-    // 确保类型安全 - 显式声明返回类型
-    if (result && 'success' in result) {
-      toast.success(`重置邮件已发送到 ${data.email}`)
-    } else {
-      toast.error(result.error || '发送失败，请稍后重试')
-    }
+  async function onSubmit(data: z.infer<typeof formSchema>) {
     setIsLoading(true)
 
     // 调用密码重置方法
-    const result = resetPassword(data.email)
+    const result = await resetPassword(data.email)
 
     setTimeout(() => {
       setIsLoading(false)

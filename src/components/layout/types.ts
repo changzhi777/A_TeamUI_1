@@ -1,3 +1,4 @@
+import React from 'react'
 import { type LinkProps } from '@tanstack/react-router'
 
 type User = {
@@ -24,6 +25,18 @@ type NavLink = BaseNavItem & {
   items?: never
 }
 
+type NavItem = NavLink
+
+type NavCollapsible = BaseNavItem & {
+  items?: NavItem[]
+  icon?: React.ElementType
+}
+
+type NavGroup = {
+  title: string
+  items?: (NavLink | NavCollapsible)[]
+}
+
 // 侧边栏用户类型（兼容 AuthUser 和 User）
 type SidebarUser = User | Omit<{ id: string; role: string; createdAt: string }, 'avatar'>
 
@@ -33,4 +46,4 @@ type SidebarData = {
   navGroups: NavGroup[]
 }
 
-export type { SidebarData, NavGroup, NavItem, NavCollapsible, NavLink }
+export type { SidebarData, SidebarUser, NavGroup, NavItem, NavCollapsible, NavLink }

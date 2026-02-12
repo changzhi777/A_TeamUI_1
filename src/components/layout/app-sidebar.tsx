@@ -1,3 +1,4 @@
+import React from 'react'
 import { useLayout } from '@/context/layout-provider'
 import {
   Sidebar,

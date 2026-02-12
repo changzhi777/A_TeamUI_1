@@ -1,3 +1,4 @@
+import React from 'react'
 import { SearchIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useSearch } from '@/context/search-provider'

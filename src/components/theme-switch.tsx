@@ -1,3 +1,4 @@
+import React from 'react'
 import { useEffect } from 'react'
 import { Check, Moon, Sun } from 'lucide-react'
 import { cn } from '@/lib/utils'
