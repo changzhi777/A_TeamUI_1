@@ -9,7 +9,7 @@ const pool = mysql.createPool({
   user: env.db.user,
   password: env.db.password,
   database: env.db.name,
-  connectionLimit: 10,
+  connectionLimit: 100,
   // Enable multiple statements (required for migrations)
   multipleStatements: true,
   // Disable SSL and use default authentication
