@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { TopNav } from '@/components/layout/top-nav'
@@ -55,7 +55,7 @@ export function GlobalScriptEditorPage() {
   const getAllProjects = useProjectStore((state) => state.getAllProjects)
   const getProjectById = useProjectStore((state) => state.getProjectById)
   const updateScript = useProjectStore((state) => state.updateScript)
-  const addScriptVersion = useProjectStore((state) => state.addScriptVersion)
+  const addScriptVersion = useProjectStore((state) => state.loadScriptVersions)
   const restoreScriptVersion = useProjectStore((state) => state.restoreScriptVersion)
 
   const [selectedProjectId, setSelectedProjectId] = useState<string>('')
@@ -102,10 +102,7 @@ export function GlobalScriptEditorPage() {
 
   const handleSaveVersion = () => {
     if (!selectedProject) return
-    addScriptVersion(selectedProject.id, {
-      content,
-      createdBy: 'current-user',
-    })
+    addScriptVersion(selectedProject.id, content)
     setLastSaved(new Date())
   }
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -31,7 +31,7 @@ interface ProjectFormDialogProps {
 
 export function ProjectFormDialog({ open, onOpenChange, project }: ProjectFormDialogProps) {
   const { t } = useI18n()
-  const addProject = useProjectStore((state) => state.addProject)
+  const addProject = useProjectStore((state) => state.loadProject)
   const updateProject = useProjectStore((state) => state.updateProject)
   const user = useAuthStore((state) => state.user)
   const { canWriteProject } = usePermissionCheck()

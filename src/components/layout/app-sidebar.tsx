@@ -18,8 +18,17 @@ export function AppSidebar() {
   const { collapsible, variant } = useLayout()
   const user = useAuthStore((state) => state.user)
 
-  // 类型断言：确保 user 兼容 SidebarUser 类型
-  const currentUser: Parameters<typeof NavUser>[0] = user || sidebarData.user
+  // 默认用户（兼容 AuthUser 类型）
+  const defaultUser: AuthUser = {
+    id: 'default',
+    name: '创作者',
+    email: 'creator@example.com',
+    avatar: '/avatars/creator.jpg',
+    role: 'member',
+    createdAt: new Date().toISOString(),
+  }
+
+  const currentUser: AuthUser = user || defaultUser
 
   return (
     <Sidebar collapsible={collapsible} variant={variant}>

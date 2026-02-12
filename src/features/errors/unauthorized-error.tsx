@@ -1,7 +1,8 @@
+import React from 'react'
 import { useNavigate, useRouter } from '@tanstack/react-router'
 import { Button } from '@/components/ui/button'
 
-export function UnauthorisedError() {
+export function UnauthorisedError(): React.JSX.Element {
   const navigate = useNavigate()
   const { history } = useRouter()
   return (

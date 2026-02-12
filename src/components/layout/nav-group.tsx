@@ -54,17 +54,21 @@ export function NavGroup({ title, items }: NavGroupProps) {
       <SidebarGroupLabel>{title}</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => {
-          const key = `${item.title}-${item.url}`
+          // 使用安全的 key 生成方式，处理 NavCollapsible 没有 url 的情况
+          const key = 'url' in item && item.url ? `${item.title}-${item.url}` : item.title
 
-          if (!item.items)
-            return <SidebarMenuLink key={key} item={item} href={href} />
+          // 类型守卫：检查 item 是否为 NavLink 类型
+          const isNavLink = !('items' in item) || !item.items
+
+          if (isNavLink)
+            return <SidebarMenuLink key={key} item={item as NavLink} href={href} />
 
           if (state === 'collapsed' && !isMobile)
             return (
-              <SidebarMenuCollapsedDropdown key={key} item={item} href={href} />
+              <SidebarMenuCollapsedDropdown key={key} item={item as NavCollapsible} href={href} />
             )
 
-          return <SidebarMenuCollapsible key={key} item={item} href={href} />
+          return <SidebarMenuCollapsible key={key} item={item as NavCollapsible} href={href} />
         })}
       </SidebarMenu>
     </SidebarGroup>
@@ -248,34 +252,41 @@ function SidebarMenuCollapsedDropdown({
             {item.title} {item.badge ? `(${item.badge})` : ''}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {item.items.map((sub) => (
-            <DropdownMenuItem key={`${sub.title}-${sub.url}`} asChild>
-              <Link
-                to={sub.url}
-                className={`${checkIsActive(href, sub) ? 'bg-secondary' : ''}`}
-              >
-                {sub.icon && <sub.icon />}
-                <span className='max-w-52 text-wrap'>{sub.title}</span>
-                {sub.badge && (
-                  <span className='ms-auto text-xs'>{sub.badge}</span>
-                )}
-              </Link>
-            </DropdownMenuItem>
-          ))}
+          {item.items?.map((sub) => {
+            const subUrl = 'url' in sub ? sub.url : ''
+            return (
+              <DropdownMenuItem key={`${sub.title}-${subUrl}`} asChild>
+                <Link
+                  to={subUrl}
+                  className={`${checkIsActive(href, sub) ? 'bg-secondary' : ''}`}
+                >
+                  {'icon' in sub && sub.icon && <sub.icon />}
+                  <span className='max-w-52 text-wrap'>{sub.title}</span>
+                  {'badge' in sub && sub.badge && (
+                    <span className='ms-auto text-xs'>{sub.badge}</span>
+                  )}
+                </Link>
+              </DropdownMenuItem>
+            )
+          })}
         </DropdownMenuContent>
       </DropdownMenu>
     </SidebarMenuItem>
   )
 }
 
-function checkIsActive(href: string, item: NavItem, mainNav = false) {
+function checkIsActive(href: string, item: NavItem | NavCollapsible, mainNav = false) {
+  const itemUrl = 'url' in item ? item.url : undefined
+  const itemItems = 'items' in item ? item.items : undefined
+
   return (
-    href === item.url || // /endpint?search=param
-    href.split('?')[0] === item.url || // endpoint
-    !!item?.items?.filter((i) => i.url === href).length || // if child nav is active
+    (itemUrl && href === itemUrl) || // /endpint?search=param
+    (itemUrl && href.split('?')[0] === itemUrl) || // endpoint
+    !!itemItems?.filter((i) => 'url' in i && i.url === href).length || // if child nav is active
     (mainNav &&
+      itemUrl &&
       href.split('/')[1] !== '' &&
-      href.split('/')[1] === item?.url?.split('/')[1])
+      href.split('/')[1] === itemUrl.split('/')[1])
   )
 }
 

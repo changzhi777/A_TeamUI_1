@@ -50,30 +50,6 @@ export interface GlobalMember extends ProjectMember {
   projectId?: string
 }
 
-export interface Project {
-  id: string
-  name: string
-  description: string
-  type: ProjectType
-  status: ProjectStatus
-  episodeRange: string
-  createdAt: string
-  updatedAt: string
-  createdBy: string
-  director: string
-  members: ProjectMember[]
-  // 剧本相关
-  scriptContent?: string
-  scriptVersions?: ScriptVersion[]
-  // 分镜头统计
-  totalShots: number
-  completedShots: number
-  // 收藏和置顶
-  isFavorite: boolean
-  isPinned: boolean
-  pinnedAt?: string
-}
-
 export interface ScriptVersion {
   id: string
   content: string

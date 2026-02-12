@@ -1,3 +1,4 @@
+import React from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -18,7 +19,7 @@ import { Analytics } from './components/analytics'
 import { Overview } from './components/overview'
 import { RecentSales } from './components/recent-sales'
 
-export function Dashboard() {
+export function Dashboard(): React.JSX.Element {
   return (
     <>
       {/* ===== Top Heading ===== */}

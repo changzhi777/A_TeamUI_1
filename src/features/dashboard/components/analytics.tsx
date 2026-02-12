@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   Card,
   CardContent,
@@ -7,7 +8,7 @@ import {
 } from '@/components/ui/card'
 import { AnalyticsChart } from './analytics-chart'
 
-export function Analytics() {
+export function Analytics(): React.JSX.Element {
   return (
     <div className='space-y-4'>
       <Card>

@@ -1,6 +1,7 @@
+import React from 'react'
 import { Button } from '@/components/ui/button'
 
-export function MaintenanceError() {
+export function MaintenanceError(): React.JSX.Element {
   return (
     <div className='h-svh'>
       <div className='m-auto flex h-full w-full flex-col items-center justify-center gap-2'>

@@ -98,7 +98,6 @@ interface AuthState {
   register: (email: string, password: string, name: string) => Promise<{ success: boolean; user?: AuthUser; error?: string }>
 
   // Token 管理
-  refreshToken: () => Promise<boolean>
   setRememberMe: (remember: boolean) => void
 
   // 密码重置
@@ -189,7 +188,7 @@ const roleHierarchy: Record<UserRole, number> = {
   screenwriter: 3,
   editor: 2,
   member: 1,
-};
+} as const;
 
 // 使用 API 的 auth store
 export const useAuthStore = create<AuthState>()(
@@ -206,13 +205,11 @@ export const useAuthStore = create<AuthState>()(
 
       // 登录
       login: async (user, tokenInfo) => {
-        const cookieOptions = tokenInfo.rememberMe
-          ? { maxAge: 90 * 24 * 60 * 60 } // 90 天
-          : { maxAge: 30 * 24 * 60 * 60 } // 30 天
+        const maxAge = tokenInfo.rememberMe ? 90 * 24 * 60 * 60 : 30 * 24 * 60 * 60
 
         // 设置 Cookie（同时设置 access_token 和 refresh_token）
-        setCookie('access_token', JSON.stringify(tokenInfo.accessToken), cookieOptions)
-        setCookie('refresh_token', JSON.stringify(tokenInfo.refreshToken), cookieOptions)
+        setCookie('access_token', JSON.stringify(tokenInfo.accessToken), maxAge)
+        setCookie('refresh_token', JSON.stringify(tokenInfo.refreshToken), maxAge)
 
         // 添加当前会话
         const currentSession: Session = {
@@ -263,7 +260,7 @@ export const useAuthStore = create<AuthState>()(
       register: async (email, password, name) => {
         try {
           const response = await authApi.register({ name, email, password })
-          return response
+          return { success: true, user: response.user }
         } catch (error) {
           console.error('Registration error:', error)
           return {
@@ -284,12 +281,10 @@ export const useAuthStore = create<AuthState>()(
         try {
           const response = await authApi.refreshToken(currentRefreshToken)
 
-          const cookieOptions = get().rememberMe
-            ? { maxAge: 90 * 24 * 60 * 60 }
-            : { maxAge: 30 * 24 * 60 * 60 }
+          const maxAge = get().rememberMe ? 90 * 24 * 60 * 60 : 30 * 24 * 60 * 60
 
-          setCookie('access_token', JSON.stringify(response.accessToken), cookieOptions)
-          setCookie('refresh_token', JSON.stringify(response.refreshToken), cookieOptions)
+          setCookie('access_token', JSON.stringify(response.accessToken), maxAge)
+          setCookie('refresh_token', JSON.stringify(response.refreshToken), maxAge)
 
           set({
             accessToken: response.accessToken,
@@ -314,7 +309,8 @@ export const useAuthStore = create<AuthState>()(
       // 密码重置
       resetPassword: async (email) => {
         try {
-          return await authApi.forgotPassword(email)
+          await authApi.forgotPassword(email)
+          return { success: true }
         } catch (error) {
           console.error('Reset password error:', error)
           return {
@@ -326,7 +322,8 @@ export const useAuthStore = create<AuthState>()(
 
       newPassword: async (token, newPassword) => {
         try {
-          return await authApi.resetPassword(token, newPassword)
+          await authApi.resetPassword(token, newPassword)
+          return { success: true }
         } catch (error) {
           console.error('New password error:', error)
           return {
@@ -339,7 +336,8 @@ export const useAuthStore = create<AuthState>()(
       // OTP
       sendOtp: async () => {
         try {
-          return await authApi.sendOtp()
+          await authApi.sendOtp()
+          return { success: true }
         } catch (error) {
           console.error('Send OTP error:', error)
           return {
@@ -351,7 +349,8 @@ export const useAuthStore = create<AuthState>()(
 
       verifyOtp: async (code) => {
         try {
-          return await authApi.verifyOtp(code)
+          await authApi.verifyOtp(code)
+          return { success: true }
         } catch (error) {
           console.error('Verify OTP error:', error)
           return {
@@ -363,7 +362,8 @@ export const useAuthStore = create<AuthState>()(
 
       enableOtp: async (code) => {
         try {
-          return await authApi.enableOtp(code)
+          const result = await authApi.enableOtp(code)
+          return { success: true, recoveryCodes: result.recoveryCodes || [] }
         } catch (error) {
           console.error('Enable OTP error:', error)
           return {
@@ -392,16 +392,26 @@ export const useAuthStore = create<AuthState>()(
       },
 
       // 用户信息更新
-      updateUser: (updates) => {
-        const { user } = get()
-        if (user) {
-          set({ user: { ...user, ...updates } })
+      updateUser: async (updates) => {
+        try {
+          const { user } = get()
+          if (user) {
+            set({ user: { ...user, ...updates } })
+          }
+          return { success: true }
+        } catch (error) {
+          console.error('Update user error:', error)
+          return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Update failed',
+          }
         }
       },
 
       updateProfile: async (updates) => {
         try {
-          return await authApi.updateProfile(updates)
+          await authApi.updateProfile(updates)
+          return { success: true }
         } catch (error) {
           console.error('Update profile error:', error)
           return {
@@ -413,7 +423,8 @@ export const useAuthStore = create<AuthState>()(
 
       changePassword: async (oldPassword, newPassword) => {
         try {
-          return await authApi.changePassword({ oldPassword, newPassword })
+          await authApi.changePassword({ oldPassword, newPassword })
+          return { success: true }
         } catch (error) {
           console.error('Change password error:', error)
           return {
@@ -542,9 +553,9 @@ export const useAuthStore = create<AuthState>()(
       name: 'auth-storage',
       // 只持久化必要的状态
       partialize: (state) =>
-        Object.fromKeys(state).filter((key) =>
+        Object.keys(state).filter((key) =>
           key !== 'sessions' && key !== 'loginHistory'
-        ),
+        ) as Array<keyof typeof state>,
     }
   )
 )

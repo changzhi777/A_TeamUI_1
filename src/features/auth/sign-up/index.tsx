@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   Card,
   CardContent,
@@ -9,7 +10,7 @@ import {
 import { AuthLayout } from '../auth-layout'
 import { SignUpForm } from './components/sign-up-form'
 
-export function SignUp() {
+export function SignUp(): React.JSX.Element {
   return (
     <AuthLayout>
       <Card className='gap-4'>

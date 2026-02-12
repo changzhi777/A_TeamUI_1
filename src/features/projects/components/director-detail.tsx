@@ -1,117 +1,73 @@
 import { useMemo } from 'react'
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
+import { useParams } from '@tanstack/react-router'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { ArrowLeft, Film, Users, Clock } from 'lucide-react'
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 import { useProjectStore } from '@/stores/project-store'
-import { useI18n } from '@/i18n'
-import { formatDateTime } from '@/lib/utils'
-
-function getStatusLabel(status: string, t: any) {
-  const statusKey = status as keyof typeof t.project.status
-  return t.project.status[statusKey] || status
-}
+import { ArrowLeft, Users, Film, FileText, Settings, Video, Star, Pin } from 'lucide-react'
 
 function getStatusBadgeColor(status: string) {
   switch (status) {
     case 'planning':
-      return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 border-blue-200 dark:border-blue-800'
+      return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
     case 'filming':
-      return 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200 border-orange-200 dark:border-orange-800'
+      return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
     case 'postProduction':
-      return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 border-purple-200 dark:border-purple-800'
+      return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200'
     case 'completed':
-      return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 border-green-200 dark:border-green-800'
+      return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
     default:
-      return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200 border-gray-200 dark:border-gray-800'
+      return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'
   }
 }
 
-function DirectorProjectCard({ project }: { project: any }) {
-  const { t } = useI18n()
-  const statusLabel = getStatusLabel(project.status, t)
-  const progressPercentage = project.totalShots > 0
-    ? Math.round((project.completedShots / project.totalShots) * 100)
-    : 0
+interface QuickActionCardProps {
+  title: string
+  description: string
+  icon: any
+  to?: string
+  params?: any
+  onClick?: () => void
+}
 
-  return (
-    <Card className="hover:shadow-lg transition-all duration-200 border-border/50 hover:border-primary/50">
-      <CardContent className="p-6">
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex-1 min-w-0">
-            <Link
-              to="/projects/$id"
-              params={{ id: project.id }}
-              className="text-lg font-semibold mb-1 hover:text-primary transition-colors"
-            >
-              {project.name}
-            </Link>
-            {project.episodeRange && (
-              <div className="mb-2">
-                <Badge variant="secondary" className="gap-1">
-                  <Film className="h-3 w-3" />
-                  {project.episodeRange}
-                </Badge>
-              </div>
-            )}
-            <p className="text-sm text-muted-foreground line-clamp-2 min-h-[40px]">
-              {project.description || '暂无描述'}
-            </p>
+function QuickActionCard({
+  title,
+  description,
+  icon,
+  to,
+  params,
+  onClick,
+}: QuickActionCardProps) {
+  const content = (
+    <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
+      <CardHeader>
+        <div className="flex items-center gap-4">
+          <div className="p-3 bg-primary/10 rounded-lg">
+            <Icon className="h-6 w-6 text-primary" />
           </div>
-          <Badge
-            variant="outline"
-            className={getStatusBadgeColor(project.status)}
-          >
-            {statusLabel}
-          </Badge>
-        </div>
-
-        <div className="mb-4">
-          <div className="flex justify-between text-sm mb-2">
-            <span className="text-muted-foreground">分镜头进度</span>
-            <span className="font-medium">{progressPercentage}%</span>
-          </div>
-          <div className="h-2 bg-secondary rounded-full overflow-hidden">
-            <div
-              className="h-full bg-primary transition-all duration-300"
-              style={{ width: `${progressPercentage}%` }}
-            />
+          <div className="space-y-1">
+            <CardTitle className="text-lg">{title}</CardTitle>
+            <CardDescription className="text-sm">{description}</CardDescription>
           </div>
         </div>
-
-        <div className="flex items-center justify-between text-sm text-muted-foreground">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1.5">
-              <Film className="h-4 w-4" />
-              <span>{project.completedShots}/{project.totalShots}</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <Users className="h-4 w-4" />
-              <span>{project.members.length}</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <Clock className="h-3.5 w-3.5" />
-            <span className="text-xs">
-              {formatDateTime(project.updatedAt)}
-            </span>
-          </div>
-        </div>
-      </CardContent>
+      </CardHeader>
     </Card>
   )
+
+  return content
 }
 
 export function DirectorDetailPage() {
   const { t } = useI18n()
   const navigate = useNavigate()
-  const { director } = Route.useParams()
+  const params = useParams({ strict: false })
+  const { id } = params
   const projects = useProjectStore((state) => state.projects)
 
   const directorProjects = useMemo(() => {
-    return projects.filter(p => p.director === director)
-  }, [projects, director])
+    return projects.filter((p): p && 'director' in p && p.director === id)
+  }, [projects, director] as any)
 
   const stats = useMemo(() => {
     const totalProjects = directorProjects.length
@@ -126,91 +82,37 @@ export function DirectorDetailPage() {
       totalShots,
       completedShots,
       totalMembers,
-      progressPercentage: totalShots > 0 ? Math.round((completedShots / totalShots) * 100) : 0,
     }
-  }, [directorProjects])
+  })
 
   return (
-    <div className="container mx-auto py-8">
-      <div className="mb-6">
-        <Button
-          variant="ghost"
-          onClick={() => navigate({ to: '/projects' })}
-          className="mb-4"
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          返回项目列表
-        </Button>
-        <h1 className="text-3xl font-bold tracking-tight mb-2">
-          {director}
-        </h1>
-        <p className="text-muted-foreground">
-          查看该导演参与的所有项目
-        </p>
-      </div>
+    <div>
+      <Header />
+      <Main className="flex flex-col items-center justify-start">
+        <TopNav links={topNav} />
+        <ProfileDropdown />
+        <ThemeSwitch />
+      </Main>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              总项目数
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.totalProjects}</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              已完成 {stats.completedProjects} 个
-            </p>
-          </CardContent>
-        </Card>
+      <div className="max-w-2xl">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink to="/projects">项目</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink to={`/directors/${id}`}>{t.director.name}</BreadcrumbLink>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
 
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              分镜头总数
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.totalShots}</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              已完成 {stats.completedShots} 个
-            </p>
-          </CardContent>
-        </Card>
+        <div className="flex items-start justify-between mb-4">
+          <h2 className="text-xl font-semibold mb-4">
+            项目列表 ({directorProjects.length})
+          </h2>
+        </div>
 
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              总体进度
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.progressPercentage}%</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              基于所有项目
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              团队成员
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.totalMembers}</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              所有项目合计
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div>
-        <h2 className="text-xl font-semibold mb-4">
-          项目列表 ({directorProjects.length})
-        </h2>
         {directorProjects.length === 0 ? (
           <Card className="border-dashed">
             <CardContent className="flex flex-col items-center justify-center py-12">

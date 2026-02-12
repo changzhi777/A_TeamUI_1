@@ -27,16 +27,21 @@ const formSchema = z
       .min(2, '姓名至少需要 2 个字符')
       .max(30, '姓名不能超过 30 个字符'),
     email: z
-      .email({ error: (iss) => (iss.input === '' ? '请输入您的邮箱' : undefined }),
+      .email({ error: (iss) => (iss.input === '' ? '请输入您的邮箱' : undefined) }),
     password: z
       .string()
       .min(8, '密码至少需要 8 个字符'),
-    confirmPassword: z.string().refine((val) => val === data.password, {
-      message: '两次输入的密码不一致',
-    }),
+    confirmPassword: z.string(),
+  }).refine((data) => data.password === data.confirmPassword, {
+    message: '两次输入的密码不一致',
+    path: ['confirmPassword'],
   })
 
-export function SignUpForm() {
+interface SignUpFormProps {
+  className?: string
+}
+
+export function SignUpForm({ className }: SignUpFormProps) {
   const navigate = useNavigate()
   const [redirectTo] = useState<string>('/projects')
   const { register, login } = useAuthStore((state) => ({
@@ -72,18 +77,16 @@ export function SignUpForm() {
         expiresAt: Date.now() + 60 * 60 * 1000,
         rememberMe: false,
       })
+      // 重定向到目标页面或项目列表
+      const targetPath = redirectTo || '/projects'
+      navigate({ to: targetPath, replace: true })
     } else {
       toast.error(result.error || '注册失败，请稍后重试')
     }
   }
 
-  // 重定向到目标页面或项目列表
-  const targetPath = redirectTo || '/projects'
-  navigate({ to: targetPath, replace: true })
-  }
-
   return (
-    <div className='flex min-h-[calc(100vh theme=\"min-h\")) w-full flex-col items-center justify-center p-8'>
+    <div className='flex min-h-[calc(100vh-theme(min-h))] w-full flex-col items-center justify-center p-8'>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -100,7 +103,8 @@ export function SignUpForm() {
                 </FormControl>
                 <FormMessage />
               </FormItem>
-            </FormField>
+            )}
+          />
           <FormField
             control={form.control}
             name='email'
@@ -112,7 +116,8 @@ export function SignUpForm() {
                 </FormControl>
                 <FormMessage />
               </FormItem>
-            </FormField>
+            )}
+          />
           <FormField
             control={form.control}
             name='password'
@@ -124,7 +129,8 @@ export function SignUpForm() {
                 </FormControl>
                 <FormMessage />
               </FormItem>
-          </FormField>
+            )}
+          />
           <FormField
             control={form.control}
             name='confirmPassword'
@@ -136,7 +142,8 @@ export function SignUpForm() {
                 </FormControl>
                 <FormMessage />
               </FormItem>
-          </FormField>
+            )}
+          />
         </form>
       </Form>
       <Button className='mt-2' disabled={isLoading}>
@@ -158,5 +165,6 @@ export function SignUpForm() {
           <Link to='/sign-in'>前往登录</Link>
         </Button>
       </div>
-    )
+    </div>
+  )
 }
