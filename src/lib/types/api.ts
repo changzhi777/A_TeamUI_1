@@ -138,8 +138,11 @@ export type WebSocketEventType =
   | 'user_left'
   | 'lock_acquired'
   | 'lock_released'
+  | 'acquire_lock' // 客户端请求获取锁
+  | 'release_lock' // 客户端请求释放锁
   | 'message_queued' // New: offline message queued
   | 'message_delivered' // New: queued message delivered
+  | 'ping' // 心跳检测
 
 export interface WebSocketMessage<T = unknown> {
   type: WebSocketEventType
