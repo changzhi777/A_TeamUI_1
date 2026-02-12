@@ -1,0 +1,1984 @@
+{
+  "config": {
+    "configFile": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\playwright.config.ts",
+    "rootDir": "C:/Users/Cz/Desktop/Code_cz/A_TeamUI/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\global-setup.ts",
+    "globalTeardown": null,
+    "globalTimeout": 60000,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 6
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/Cz/Desktop/Code_cz/A_TeamUI/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/Cz/Desktop/Code_cz/A_TeamUI/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/Cz/Desktop/Code_cz/A_TeamUI/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "C:/Users/Cz/Desktop/Code_cz/A_TeamUI/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        null
+      ],
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 8,
+    "webServer": {
+      "command": "pnpm run dev --port 5174",
+      "port": 5174,
+      "timeout": 120000,
+      "reuseExistingServer": true
+    },
+    "defaultTimeout": 10000
+  },
+  "suites": [
+    {
+      "title": "tests\\auth\\login.spec.ts",
+      "file": "tests/auth/login.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "用户认证流程",
+          "file": "tests/auth/login.spec.ts",
+          "line": 9,
+          "column": 6,
+          "specs": [
+            {
+              "title": "应该成功登录管理员账户",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 9016,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Logged in as admin@example.com\n"
+                        },
+                        {
+                          "text": "[test-1770861266155-wsefafy] ✅ Admin login successful\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:54:24.434Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "63976eba3e5fcd5ce808-dec733d40b548199a7f4",
+              "file": "tests/auth/login.spec.ts",
+              "line": 16,
+              "column": 3
+            },
+            {
+              "title": "应该成功登录普通成员账户",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2793,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Logged in as member@example.com\n"
+                        },
+                        {
+                          "text": "[test-1770861274892-ksze4e3] ✅ Member login successful\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:54:33.836Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "63976eba3e5fcd5ce808-f9b635d5b55b7216117b",
+              "file": "tests/auth/login.spec.ts",
+              "line": 32,
+              "column": 3
+            },
+            {
+              "title": "应该显示登录失败错误 - 错误密码",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2741,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[test-1770861277497-m8514ry] ✅ Login error shown correctly\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:54:36.647Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "63976eba3e5fcd5ce808-02de09ecb8467ed58cba",
+              "file": "tests/auth/login.spec.ts",
+              "line": 48,
+              "column": 3
+            },
+            {
+              "title": "应该显示登录失败错误 - 空密码",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2004,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[test-1770861280363-05t8pez] ✅ Password validation works\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:54:39.404Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "63976eba3e5fcd5ce808-7860990221b7aa9f8b4a",
+              "file": "tests/auth/login.spec.ts",
+              "line": 67,
+              "column": 3
+            },
+            {
+              "title": "应该记住登录状态",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3979,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Logged in as admin@example.com\n"
+                        },
+                        {
+                          "text": "[test-1770861282349-0jbzdr3] ✅ Auth state persisted correctly\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:54:41.423Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "63976eba3e5fcd5ce808-b7cda0c362844c4a6f21",
+              "file": "tests/auth/login.spec.ts",
+              "line": 85,
+              "column": 3
+            },
+            {
+              "title": "应该支持表单验证",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7294,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[test-1770861291510-7yn18gv] ✅ Form validation works correctly\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:54:45.419Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "63976eba3e5fcd5ce808-ce26ca08a1614fb6e0f8",
+              "file": "tests/auth/login.spec.ts",
+              "line": 106,
+              "column": 3
+            },
+            {
+              "title": "应该支持回车键提交表单",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7812,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[test-1770861293742-aw9e2k9] ✅ Enter key submission works\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:54:52.727Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "63976eba3e5fcd5ce808-fb716f4fdcc4237e670e",
+              "file": "tests/auth/login.spec.ts",
+              "line": 128,
+              "column": 3
+            },
+            {
+              "title": "应该成功登录管理员账户",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 8392,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Logged in as admin@example.com\n"
+                        },
+                        {
+                          "text": "[test-1770861271343-18tegfi] ✅ Admin login successful\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:54:24.470Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "63976eba3e5fcd5ce808-00bbce753cafabffc1c3",
+              "file": "tests/auth/login.spec.ts",
+              "line": 16,
+              "column": 3
+            },
+            {
+              "title": "应该成功登录普通成员账户",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 6006,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Logged in as member@example.com\n"
+                        },
+                        {
+                          "text": "[test-1770861278692-sxqs0gp] ✅ Member login successful\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:54:35.225Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "63976eba3e5fcd5ce808-f859f9399907ef2c4d3a",
+              "file": "tests/auth/login.spec.ts",
+              "line": 32,
+              "column": 3
+            },
+            {
+              "title": "应该显示登录失败错误 - 错误密码",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 6586,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[test-1770861284987-4hgnnrh] ✅ Login error shown correctly\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:54:41.252Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "63976eba3e5fcd5ce808-8f2fea7892974f67e143",
+              "file": "tests/auth/login.spec.ts",
+              "line": 48,
+              "column": 3
+            },
+            {
+              "title": "应该显示登录失败错误 - 空密码",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 5954,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[test-1770861291620-1cuqkyz] ✅ Password validation works\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:54:47.853Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "63976eba3e5fcd5ce808-eabd96c43c65cdfc7dd8",
+              "file": "tests/auth/login.spec.ts",
+              "line": 67,
+              "column": 3
+            },
+            {
+              "title": "应该记住登录状态",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 14840,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Logged in as admin@example.com\n"
+                        },
+                        {
+                          "text": "[test-1770861298878-mj3yyrc] ✅ Auth state persisted correctly\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:54:53.819Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "63976eba3e5fcd5ce808-076341c36e29bf642c91",
+              "file": "tests/auth/login.spec.ts",
+              "line": 85,
+              "column": 3
+            },
+            {
+              "title": "应该支持表单验证",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 9626,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[test-1770861316153-iy8l31c] ✅ Form validation works correctly\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:55:08.684Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "63976eba3e5fcd5ce808-0f923a8538f3a0c59b3a",
+              "file": "tests/auth/login.spec.ts",
+              "line": 106,
+              "column": 3
+            },
+            {
+              "title": "应该支持回车键提交表单",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:55:18.340Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "63976eba3e5fcd5ce808-a04f7898abedba08945c",
+              "file": "tests/auth/login.spec.ts",
+              "line": 128,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "tests\\projects\\project-creation.spec.ts",
+      "file": "tests/projects/project-creation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "项目创建流程",
+          "file": "tests/projects/project-creation.spec.ts",
+          "line": 9,
+          "column": 6,
+          "specs": [
+            {
+              "title": "应该成功创建新项目",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "timedOut",
+                      "duration": 32641,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\projects\\project-creation.spec.ts",
+                            "column": 24,
+                            "line": 26
+                          },
+                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has(svg.lucide-plus)').first()\u001b[22m\n\n\n  24 |     // Click new project button - find button containing Plus icon\n  25 |     const createButton = page.locator('button:has(svg.lucide-plus)').first()\n> 26 |     await createButton.click()\n     |                        ^\n  27 |     await page.waitForTimeout(1000) // Wait for dialog animation\n  28 |\n  29 |     // Fill project form - use id attribute\n    at C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\projects\\project-creation.spec.ts:26:24"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "✅ Logged in as admin@example.com\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:54:24.458Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-projects-project-creation-项目创建流程-应该成功创建新项目-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-projects-project-creation-项目创建流程-应该成功创建新项目-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-projects-project-creation-项目创建流程-应该成功创建新项目-chromium\\error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "60b86492bb8c1d00f057-632a3ee1916230c4e780",
+              "file": "tests/projects/project-creation.spec.ts",
+              "line": 17,
+              "column": 3
+            },
+            {
+              "title": "应该显示项目表单验证错误",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Logged in as admin@example.com\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:54:59.887Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-projects-project-creation-项目创建流程-应该显示项目表单验证错误-chromium\\test-failed-1.png"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "60b86492bb8c1d00f057-05b19ae3d00f464d02f6",
+              "file": "tests/projects/project-creation.spec.ts",
+              "line": 44,
+              "column": 3
+            },
+            {
+              "title": "应该支持取消项目创建",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "60b86492bb8c1d00f057-8958bebe7ffe46a9633d",
+              "file": "tests/projects/project-creation.spec.ts",
+              "line": 63,
+              "column": 3
+            },
+            {
+              "title": "应该成功创建不同类型的项目",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "60b86492bb8c1d00f057-0af74c982527aa9d2253",
+              "file": "tests/projects/project-creation.spec.ts",
+              "line": 82,
+              "column": 3
+            },
+            {
+              "title": "应该支持项目收藏功能",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "60b86492bb8c1d00f057-0cb1f75f2f125cc54827",
+              "file": "tests/projects/project-creation.spec.ts",
+              "line": 113,
+              "column": 3
+            },
+            {
+              "title": "应该支持项目置顶功能",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "60b86492bb8c1d00f057-20bcadfbdc25a7d6f6dd",
+              "file": "tests/projects/project-creation.spec.ts",
+              "line": 136,
+              "column": 3
+            },
+            {
+              "title": "应该正确处理项目删除",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "60b86492bb8c1d00f057-f48d3d7e84e0ed1bb2e7",
+              "file": "tests/projects/project-creation.spec.ts",
+              "line": 159,
+              "column": 3
+            },
+            {
+              "title": "应该成功创建新项目",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "failed",
+                      "duration": 9959,
+                      "error": {
+                        "message": "Error: page.goto: NS_ERROR_FAILURE\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/projects\", waiting until \"load\"\u001b[22m\n",
+                        "stack": "Error: page.goto: NS_ERROR_FAILURE\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/projects\", waiting until \"load\"\u001b[22m\n\n    at C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\projects\\project-creation.spec.ts:21:16",
+                        "location": {
+                          "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\projects\\project-creation.spec.ts",
+                          "column": 16,
+                          "line": 21
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 19 |\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[90m// Navigate to projects page\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 21 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/projects'\u001b[39m)\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 22 |\u001b[39m     \u001b[36mawait\u001b[39m waitForNetworkIdle(page)\n \u001b[90m 23 |\u001b[39m\n \u001b[90m 24 |\u001b[39m     \u001b[90m// Click new project button - find button containing Plus icon\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\projects\\project-creation.spec.ts",
+                            "column": 16,
+                            "line": 21
+                          },
+                          "message": "Error: page.goto: NS_ERROR_FAILURE\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/projects\", waiting until \"load\"\u001b[22m\n\n\n  19 |\n  20 |     // Navigate to projects page\n> 21 |     await page.goto('/projects')\n     |                ^\n  22 |     await waitForNetworkIdle(page)\n  23 |\n  24 |     // Click new project button - find button containing Plus icon\n    at C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\projects\\project-creation.spec.ts:21:16"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "✅ Logged in as admin@example.com\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:54:24.504Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-projects-project-creation-项目创建流程-应该成功创建新项目-firefox\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-projects-project-creation-项目创建流程-应该成功创建新项目-firefox\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-projects-project-creation-项目创建流程-应该成功创建新项目-firefox\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\projects\\project-creation.spec.ts",
+                        "column": 16,
+                        "line": 21
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "60b86492bb8c1d00f057-d34448e8abea48891208",
+              "file": "tests/projects/project-creation.spec.ts",
+              "line": 17,
+              "column": 3
+            },
+            {
+              "title": "应该显示项目表单验证错误",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 4,
+                      "status": "failed",
+                      "duration": 8584,
+                      "error": {
+                        "message": "Error: page.goto: NS_BINDING_ABORTED\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/projects\", waiting until \"load\"\u001b[22m\n",
+                        "stack": "Error: page.goto: NS_BINDING_ABORTED\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/projects\", waiting until \"load\"\u001b[22m\n\n    at C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\projects\\project-creation.spec.ts:47:16",
+                        "location": {
+                          "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\projects\\project-creation.spec.ts",
+                          "column": 16,
+                          "line": 47
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 45 |\u001b[39m     \u001b[36mconst\u001b[39m testId \u001b[33m=\u001b[39m generateTestId()\n \u001b[90m 46 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 47 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/projects'\u001b[39m)\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 48 |\u001b[39m     \u001b[36mawait\u001b[39m waitForNetworkIdle(page)\n \u001b[90m 49 |\u001b[39m\n \u001b[90m 50 |\u001b[39m     \u001b[90m// Click new project without filling name\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\projects\\project-creation.spec.ts",
+                            "column": 16,
+                            "line": 47
+                          },
+                          "message": "Error: page.goto: NS_BINDING_ABORTED\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/projects\", waiting until \"load\"\u001b[22m\n\n\n  45 |     const testId = generateTestId()\n  46 |\n> 47 |     await page.goto('/projects')\n     |                ^\n  48 |     await waitForNetworkIdle(page)\n  49 |\n  50 |     // Click new project without filling name\n    at C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\projects\\project-creation.spec.ts:47:16"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "✅ Logged in as admin@example.com\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:54:37.314Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-projects-project-creation-项目创建流程-应该显示项目表单验证错误-firefox\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-projects-project-creation-项目创建流程-应该显示项目表单验证错误-firefox\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-projects-project-creation-项目创建流程-应该显示项目表单验证错误-firefox\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\projects\\project-creation.spec.ts",
+                        "column": 16,
+                        "line": 47
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "60b86492bb8c1d00f057-222131a5c7b367c5fe27",
+              "file": "tests/projects/project-creation.spec.ts",
+              "line": 44,
+              "column": 3
+            },
+            {
+              "title": "应该支持取消项目创建",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 4,
+                      "status": "failed",
+                      "duration": 9124,
+                      "error": {
+                        "message": "Error: page.goto: NS_ERROR_FAILURE\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/projects\", waiting until \"load\"\u001b[22m\n",
+                        "stack": "Error: page.goto: NS_ERROR_FAILURE\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/projects\", waiting until \"load\"\u001b[22m\n\n    at C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\projects\\project-creation.spec.ts:66:16",
+                        "location": {
+                          "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\projects\\project-creation.spec.ts",
+                          "column": 16,
+                          "line": 66
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 64 |\u001b[39m     \u001b[36mconst\u001b[39m testId \u001b[33m=\u001b[39m generateTestId()\n \u001b[90m 65 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 66 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/projects'\u001b[39m)\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 67 |\u001b[39m     \u001b[36mawait\u001b[39m waitForNetworkIdle(page)\n \u001b[90m 68 |\u001b[39m\n \u001b[90m 69 |\u001b[39m     \u001b[90m// Open and cancel dialog\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\projects\\project-creation.spec.ts",
+                            "column": 16,
+                            "line": 66
+                          },
+                          "message": "Error: page.goto: NS_ERROR_FAILURE\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/projects\", waiting until \"load\"\u001b[22m\n\n\n  64 |     const testId = generateTestId()\n  65 |\n> 66 |     await page.goto('/projects')\n     |                ^\n  67 |     await waitForNetworkIdle(page)\n  68 |\n  69 |     // Open and cancel dialog\n    at C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\projects\\project-creation.spec.ts:66:16"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "✅ Logged in as admin@example.com\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:54:48.603Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-projects-project-creation-项目创建流程-应该支持取消项目创建-firefox\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-projects-project-creation-项目创建流程-应该支持取消项目创建-firefox\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-projects-project-creation-项目创建流程-应该支持取消项目创建-firefox\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\projects\\project-creation.spec.ts",
+                        "column": 16,
+                        "line": 66
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "60b86492bb8c1d00f057-1d41de72a55213530b8a",
+              "file": "tests/projects/project-creation.spec.ts",
+              "line": 63,
+              "column": 3
+            },
+            {
+              "title": "应该成功创建不同类型的项目",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 4,
+                      "status": "failed",
+                      "duration": 8829,
+                      "error": {
+                        "message": "Error: page.goto: NS_ERROR_FAILURE\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/projects\", waiting until \"load\"\u001b[22m\n",
+                        "stack": "Error: page.goto: NS_ERROR_FAILURE\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/projects\", waiting until \"load\"\u001b[22m\n\n    at C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\projects\\project-creation.spec.ts:85:16",
+                        "location": {
+                          "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\projects\\project-creation.spec.ts",
+                          "column": 16,
+                          "line": 85
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 83 |\u001b[39m     \u001b[36mconst\u001b[39m testId \u001b[33m=\u001b[39m generateTestId()\n \u001b[90m 84 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 85 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/projects'\u001b[39m)\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 86 |\u001b[39m     \u001b[36mawait\u001b[39m waitForNetworkIdle(page)\n \u001b[90m 87 |\u001b[39m\n \u001b[90m 88 |\u001b[39m     \u001b[90m// Test different project types\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\projects\\project-creation.spec.ts",
+                            "column": 16,
+                            "line": 85
+                          },
+                          "message": "Error: page.goto: NS_ERROR_FAILURE\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/projects\", waiting until \"load\"\u001b[22m\n\n\n  83 |     const testId = generateTestId()\n  84 |\n> 85 |     await page.goto('/projects')\n     |                ^\n  86 |     await waitForNetworkIdle(page)\n  87 |\n  88 |     // Test different project types\n    at C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\projects\\project-creation.spec.ts:85:16"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "✅ Logged in as admin@example.com\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:55:04.099Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-projects-project-creation-项目创建流程-应该成功创建不同类型的项目-firefox\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-projects-project-creation-项目创建流程-应该成功创建不同类型的项目-firefox\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-projects-project-creation-项目创建流程-应该成功创建不同类型的项目-firefox\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\projects\\project-creation.spec.ts",
+                        "column": 16,
+                        "line": 85
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "60b86492bb8c1d00f057-6cd194415c0c01344ab9",
+              "file": "tests/projects/project-creation.spec.ts",
+              "line": 82,
+              "column": 3
+            },
+            {
+              "title": "应该支持项目收藏功能",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 14,
+                      "parallelIndex": 4,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:55:16.161Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "60b86492bb8c1d00f057-6b3d2663c22aa25d78cc",
+              "file": "tests/projects/project-creation.spec.ts",
+              "line": 113,
+              "column": 3
+            },
+            {
+              "title": "应该支持项目置顶功能",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "60b86492bb8c1d00f057-c59dd67d30503e426cfe",
+              "file": "tests/projects/project-creation.spec.ts",
+              "line": 136,
+              "column": 3
+            },
+            {
+              "title": "应该正确处理项目删除",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "60b86492bb8c1d00f057-4a857f79d87fc38a7b2b",
+              "file": "tests/projects/project-creation.spec.ts",
+              "line": 159,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "tests\\storyboard\\storyboard.spec.ts",
+      "file": "tests/storyboard/storyboard.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "分镜头创作流程",
+          "file": "tests/storyboard/storyboard.spec.ts",
+          "line": 9,
+          "column": 6,
+          "specs": [
+            {
+              "title": "应该成功创建新分镜头",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "timedOut",
+                      "duration": 32560,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts:12:8",
+                        "location": {
+                          "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts",
+                          "column": 8,
+                          "line": 12
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 10 |\u001b[39m   \u001b[36mlet\u001b[39m projectId\u001b[33m:\u001b[39m string\n \u001b[90m 11 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 12 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 13 |\u001b[39m     \u001b[90m// Login and navigate to projects - correct path is /sign-in\u001b[39m\n \u001b[90m 14 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/sign-in'\u001b[39m)\n \u001b[90m 15 |\u001b[39m     \u001b[36mawait\u001b[39m waitForNetworkIdle(page)\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts",
+                            "column": 8,
+                            "line": 12
+                          },
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n\n  10 |   let projectId: string\n  11 |\n> 12 |   test.beforeEach(async ({ page }) => {\n     |        ^\n  13 |     // Login and navigate to projects - correct path is /sign-in\n  14 |     await page.goto('/sign-in')\n  15 |     await waitForNetworkIdle(page)\n    at C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts:12:8"
+                        },
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\global-setup.ts",
+                            "column": 14,
+                            "line": 146
+                          },
+                          "message": "Error: page.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"创建新项目\")')\u001b[22m\n\n\n   at global-setup.ts:146\n\n  144 |\n  145 |   // Click new project button\n> 146 |   await page.click('button:has-text(\"创建新项目\")')\n      |              ^\n  147 |   await page.waitForSelector('dialog[role=\"dialog\"]', { timeout: 5000 })\n  148 |\n  149 |   // Fill project form\n    at createTestProject (C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\global-setup.ts:146:14)\n    at C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts:35:7"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "✅ Logged in as admin@example.com\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:54:24.450Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-storyboard-storyboard-分镜头创作流程-应该成功创建新分镜头-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-storyboard-storyboard-分镜头创作流程-应该成功创建新分镜头-chromium\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-storyboard-storyboard-分镜头创作流程-应该成功创建新分镜头-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts",
+                        "column": 8,
+                        "line": 12
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "8b7bba18f437279c0c01-243d3cc149e04111557b",
+              "file": "tests/storyboard/storyboard.spec.ts",
+              "line": 50,
+              "column": 3
+            },
+            {
+              "title": "应该支持分镜头重新排序",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 2,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Logged in as admin@example.com\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:54:59.624Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-storyboard-storyboard-分镜头创作流程-应该支持分镜头重新排序-chromium\\test-failed-1.png"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8b7bba18f437279c0c01-26b3118b93a5a954a0f8",
+              "file": "tests/storyboard/storyboard.spec.ts",
+              "line": 71,
+              "column": 3
+            },
+            {
+              "title": "应该支持分镜头复制",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8b7bba18f437279c0c01-81d3a296eb4edffe87a3",
+              "file": "tests/storyboard/storyboard.spec.ts",
+              "line": 98,
+              "column": 3
+            },
+            {
+              "title": "应该支持分镜头批量删除",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8b7bba18f437279c0c01-8492db83ef096d52772e",
+              "file": "tests/storyboard/storyboard.spec.ts",
+              "line": 115,
+              "column": 3
+            },
+            {
+              "title": "应该支持分镜头图片上传",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8b7bba18f437279c0c01-bca2f39221e7153b508e",
+              "file": "tests/storyboard/storyboard.spec.ts",
+              "line": 144,
+              "column": 3
+            },
+            {
+              "title": "应该正确处理视图模式切换",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8b7bba18f437279c0c01-2b351407ff2c5c60f229",
+              "file": "tests/storyboard/storyboard.spec.ts",
+              "line": 175,
+              "column": 3
+            },
+            {
+              "title": "应该支持分镜头筛选功能",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8b7bba18f437279c0c01-bef9e1d000ddbf71a242",
+              "file": "tests/storyboard/storyboard.spec.ts",
+              "line": 194,
+              "column": 3
+            },
+            {
+              "title": "应该正确处理自动保存",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8b7bba18f437279c0c01-6ac94a1216fd14b725ad",
+              "file": "tests/storyboard/storyboard.spec.ts",
+              "line": 215,
+              "column": 3
+            },
+            {
+              "title": "应该支持导出功能",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8b7bba18f437279c0c01-184f8551ff030f746be9",
+              "file": "tests/storyboard/storyboard.spec.ts",
+              "line": 235,
+              "column": 3
+            },
+            {
+              "title": "应该成功创建新分镜头",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "failed",
+                      "duration": 10086,
+                      "error": {
+                        "message": "Error: page.goto: NS_BINDING_ABORTED\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/projects\", waiting until \"load\"\u001b[22m\n",
+                        "stack": "Error: page.goto: NS_BINDING_ABORTED\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/projects\", waiting until \"load\"\u001b[22m\n\n    at C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts:19:16",
+                        "location": {
+                          "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts",
+                          "column": 16,
+                          "line": 19
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 17 |\u001b[39m\n \u001b[90m 18 |\u001b[39m     \u001b[90m// Navigate to projects page\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/projects'\u001b[39m)\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[36mawait\u001b[39m waitForNetworkIdle(page)\n \u001b[90m 21 |\u001b[39m\n \u001b[90m 22 |\u001b[39m     \u001b[90m// Check if there's a test project, if not create one\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts",
+                            "column": 16,
+                            "line": 19
+                          },
+                          "message": "Error: page.goto: NS_BINDING_ABORTED\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/projects\", waiting until \"load\"\u001b[22m\n\n\n  17 |\n  18 |     // Navigate to projects page\n> 19 |     await page.goto('/projects')\n     |                ^\n  20 |     await waitForNetworkIdle(page)\n  21 |\n  22 |     // Check if there's a test project, if not create one\n    at C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts:19:16"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "✅ Logged in as admin@example.com\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:54:24.517Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-storyboard-storyboard-分镜头创作流程-应该成功创建新分镜头-firefox\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-storyboard-storyboard-分镜头创作流程-应该成功创建新分镜头-firefox\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-storyboard-storyboard-分镜头创作流程-应该成功创建新分镜头-firefox\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts",
+                        "column": 16,
+                        "line": 19
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "8b7bba18f437279c0c01-d624bd1334f7a2b86b99",
+              "file": "tests/storyboard/storyboard.spec.ts",
+              "line": 50,
+              "column": 3
+            },
+            {
+              "title": "应该支持分镜头重新排序",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 5,
+                      "status": "failed",
+                      "duration": 8757,
+                      "error": {
+                        "message": "Error: page.goto: NS_ERROR_FAILURE\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/projects\", waiting until \"load\"\u001b[22m\n",
+                        "stack": "Error: page.goto: NS_ERROR_FAILURE\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/projects\", waiting until \"load\"\u001b[22m\n\n    at C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts:19:16",
+                        "location": {
+                          "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts",
+                          "column": 16,
+                          "line": 19
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 17 |\u001b[39m\n \u001b[90m 18 |\u001b[39m     \u001b[90m// Navigate to projects page\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/projects'\u001b[39m)\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[36mawait\u001b[39m waitForNetworkIdle(page)\n \u001b[90m 21 |\u001b[39m\n \u001b[90m 22 |\u001b[39m     \u001b[90m// Check if there's a test project, if not create one\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts",
+                            "column": 16,
+                            "line": 19
+                          },
+                          "message": "Error: page.goto: NS_ERROR_FAILURE\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/projects\", waiting until \"load\"\u001b[22m\n\n\n  17 |\n  18 |     // Navigate to projects page\n> 19 |     await page.goto('/projects')\n     |                ^\n  20 |     await waitForNetworkIdle(page)\n  21 |\n  22 |     // Check if there's a test project, if not create one\n    at C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts:19:16"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "✅ Logged in as admin@example.com\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:54:38.285Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-storyboard-storyboard-分镜头创作流程-应该支持分镜头重新排序-firefox\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-storyboard-storyboard-分镜头创作流程-应该支持分镜头重新排序-firefox\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-storyboard-storyboard-分镜头创作流程-应该支持分镜头重新排序-firefox\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts",
+                        "column": 16,
+                        "line": 19
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "8b7bba18f437279c0c01-f9e5c2edd2a92646c474",
+              "file": "tests/storyboard/storyboard.spec.ts",
+              "line": 71,
+              "column": 3
+            },
+            {
+              "title": "应该支持分镜头复制",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 5,
+                      "status": "failed",
+                      "duration": 19257,
+                      "error": {
+                        "message": "Error: page.goto: NS_ERROR_FAILURE\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/projects\", waiting until \"load\"\u001b[22m\n",
+                        "stack": "Error: page.goto: NS_ERROR_FAILURE\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/projects\", waiting until \"load\"\u001b[22m\n\n    at C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts:19:16",
+                        "location": {
+                          "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts",
+                          "column": 16,
+                          "line": 19
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 17 |\u001b[39m\n \u001b[90m 18 |\u001b[39m     \u001b[90m// Navigate to projects page\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/projects'\u001b[39m)\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[36mawait\u001b[39m waitForNetworkIdle(page)\n \u001b[90m 21 |\u001b[39m\n \u001b[90m 22 |\u001b[39m     \u001b[90m// Check if there's a test project, if not create one\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts",
+                            "column": 16,
+                            "line": 19
+                          },
+                          "message": "Error: page.goto: NS_ERROR_FAILURE\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/projects\", waiting until \"load\"\u001b[22m\n\n\n  17 |\n  18 |     // Navigate to projects page\n> 19 |     await page.goto('/projects')\n     |                ^\n  20 |     await waitForNetworkIdle(page)\n  21 |\n  22 |     // Check if there's a test project, if not create one\n    at C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts:19:16"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "✅ Logged in as admin@example.com\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:54:49.469Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-storyboard-storyboard-分镜头创作流程-应该支持分镜头复制-firefox\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-storyboard-storyboard-分镜头创作流程-应该支持分镜头复制-firefox\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-storyboard-storyboard-分镜头创作流程-应该支持分镜头复制-firefox\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts",
+                        "column": 16,
+                        "line": 19
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "8b7bba18f437279c0c01-575bc0369a6ed909ffca",
+              "file": "tests/storyboard/storyboard.spec.ts",
+              "line": 98,
+              "column": 3
+            },
+            {
+              "title": "应该支持分镜头批量删除",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 13,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 8671,
+                      "error": {
+                        "message": "Error: page.goto: NS_ERROR_FAILURE\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/projects\", waiting until \"load\"\u001b[22m\n",
+                        "stack": "Error: page.goto: NS_ERROR_FAILURE\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/projects\", waiting until \"load\"\u001b[22m\n\n    at C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts:19:16",
+                        "location": {
+                          "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts",
+                          "column": 16,
+                          "line": 19
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 17 |\u001b[39m\n \u001b[90m 18 |\u001b[39m     \u001b[90m// Navigate to projects page\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 19 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m'/projects'\u001b[39m)\n \u001b[90m    |\u001b[39m                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 20 |\u001b[39m     \u001b[36mawait\u001b[39m waitForNetworkIdle(page)\n \u001b[90m 21 |\u001b[39m\n \u001b[90m 22 |\u001b[39m     \u001b[90m// Check if there's a test project, if not create one\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts",
+                            "column": 16,
+                            "line": 19
+                          },
+                          "message": "Error: page.goto: NS_ERROR_FAILURE\nCall log:\n\u001b[2m  - navigating to \"http://localhost:5173/projects\", waiting until \"load\"\u001b[22m\n\n\n  17 |\n  18 |     // Navigate to projects page\n> 19 |     await page.goto('/projects')\n     |                ^\n  20 |     await waitForNetworkIdle(page)\n  21 |\n  22 |     // Check if there's a test project, if not create one\n    at C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts:19:16"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "✅ Logged in as admin@example.com\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-02-12T01:55:11.652Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-storyboard-storyboard-分镜头创作流程-应该支持分镜头批量删除-firefox\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-storyboard-storyboard-分镜头创作流程-应该支持分镜头批量删除-firefox\\video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\test-results\\tests-storyboard-storyboard-分镜头创作流程-应该支持分镜头批量删除-firefox\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Cz\\Desktop\\Code_cz\\A_TeamUI\\e2e\\tests\\storyboard\\storyboard.spec.ts",
+                        "column": 16,
+                        "line": 19
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "8b7bba18f437279c0c01-0a40dc0e4ea27368ca18",
+              "file": "tests/storyboard/storyboard.spec.ts",
+              "line": 115,
+              "column": 3
+            },
+            {
+              "title": "应该支持分镜头图片上传",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8b7bba18f437279c0c01-6d8408b50b0895aaaf18",
+              "file": "tests/storyboard/storyboard.spec.ts",
+              "line": 144,
+              "column": 3
+            },
+            {
+              "title": "应该正确处理视图模式切换",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8b7bba18f437279c0c01-311845ac0edece85a405",
+              "file": "tests/storyboard/storyboard.spec.ts",
+              "line": 175,
+              "column": 3
+            },
+            {
+              "title": "应该支持分镜头筛选功能",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8b7bba18f437279c0c01-c2f1ddf70a84b8255d3d",
+              "file": "tests/storyboard/storyboard.spec.ts",
+              "line": 194,
+              "column": 3
+            },
+            {
+              "title": "应该正确处理自动保存",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8b7bba18f437279c0c01-0c7726d13da38cbcdbf0",
+              "file": "tests/storyboard/storyboard.spec.ts",
+              "line": 215,
+              "column": 3
+            },
+            {
+              "title": "应该支持导出功能",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "8b7bba18f437279c0c01-ace77180abf40dbd5ca6",
+              "file": "tests/storyboard/storyboard.spec.ts",
+              "line": 235,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "message": "\u001b[31mTimed out waiting 60s for the test suite to run\u001b[39m"
+    },
+    {
+      "message": "\u001b[31mTimed out waiting 60s for the teardown for test suite to run\u001b[39m"
+    }
+  ],
+  "stats": {
+    "startTime": "2026-02-12T01:54:22.733Z",
+    "duration": 60006.657999999996,
+    "expected": 13,
+    "skipped": 23,
+    "unexpected": 10,
+    "flaky": 0
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "storyboard-template",
+  "version": "1.0",
+  "templateType": "data",
+  "shots": [
+    {
+      "shotNumber": 1,
+      "sceneNumber": "SC01",
+      "shotSize": "远景",
+      "cameraMovement": "固定",
+      "duration": 8,

@@ -1,0 +1,14 @@
+{
+  "templateType": "data",
+  "templateName": "无效格式测试",
+  "exportDate": "2026-02-11T00:00:00.000Z",
+  "shots": [
+    {
+      "shotNumber": 1,
+      "sceneNumber": "SC01",
+      "shotSize": "远景",
+      "cameraMovement": "固定",
+      "duration": 8
+    }
+  ]
+}

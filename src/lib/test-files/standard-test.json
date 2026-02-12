@@ -1,0 +1,73 @@
+{
+  "type": "storyboard-template",
+  "version": "1.0",
+  "templateType": "data",
+  "templateName": "标准测试数据",
+  "exportDate": "2026-02-11T00:00:00.000Z",
+  "columns": [
+    { "key": "shotNumber", "label": "镜头编号", "required": true },
+    { "key": "sceneNumber", "label": "场次", "required": true },
+    { "key": "shotSize", "label": "景别", "required": true },
+    { "key": "cameraMovement", "label": "运镜方式", "required": true },
+    { "key": "duration", "label": "时长", "required": true },
+    { "key": "description", "label": "画面描述", "required": false },
+    { "key": "dialogue", "label": "对白/旁白", "required": false },
+    { "key": "sound", "label": "音效说明", "required": false }
+  ],
+  "shots": [
+    {
+      "shotNumber": 1,
+      "sceneNumber": "SC01",
+      "shotSize": "远景",
+      "cameraMovement": "固定",
+      "duration": 8,
+      "description": "城市天际线远景，夕阳西下，华灯初上",
+      "dialogue": "",
+      "sound": "轻柔的城市环境音，远处车流声"
+    },
+    {
+      "shotNumber": 2,
+      "sceneNumber": "SC02",
+      "shotSize": "全景",
+      "cameraMovement": "跟拍",
+      "duration": 6,
+      "description": "主角从远处走来，背影，街道两旁店铺林立",
+      "dialogue": "",
+      "sound": "脚步声，街道背景音"
+    },
+    {
+      "shotNumber": 3,
+      "sceneNumber": "SC03",
+      "shotSize": "中景",
+      "cameraMovement": "推拉",
+      "duration": 4,
+      "description": "主角停下脚步，抬头看向前方，表情凝重",
+      "dialogue": "（内心独白）终于到了...",
+      "sound": "音乐渐强，营造紧张感"
+    },
+    {
+      "shotNumber": 4,
+      "sceneNumber": "SC04",
+      "shotSize": "近景",
+      "cameraMovement": "俯仰",
+      "duration": 3,
+      "description": "主角特写，眼神坚定，嘴角微微上扬",
+      "dialogue": "（轻声）我不会放弃的",
+      "sound": "心跳音效"
+    },
+    {
+      "shotNumber": 5,
+      "sceneNumber": "SC05",
+      "shotSize": "特写",
+      "cameraMovement": "固定",
+      "duration": 2,
+      "description": "主角手部特写，紧握成拳",
+      "dialogue": "",
+      "sound": "拳头紧握音效"
+    }
+  ],
+  "instructions": {
+    "shotSize": ["远景", "全景", "中景", "近景", "特写"],
+    "cameraMovement": ["固定", "摇", "俯仰", "推拉", "平移", "升降", "吊臂", "手持", "斯坦尼康", "跟拍", "弧形"]
+  }
+}

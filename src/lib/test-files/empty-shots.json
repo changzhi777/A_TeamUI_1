@@ -1,0 +1,16 @@
+{
+  "type": "storyboard-template",
+  "version": "1.0",
+  "templateType": "data",
+  "templateName": "空测试数据",
+  "exportDate": "2026-02-11T00:00:00.000Z",
+  "columns": [
+    { "key": "shotNumber", "label": "镜头编号", "required": true },
+    { "key": "sceneNumber", "label": "场次", "required": true }
+  ],
+  "shots": [],
+  "instructions": {
+    "shotSize": ["远景", "全景", "中景", "近景", "特写"],
+    "cameraMovement": ["固定", "摇", "俯仰", "推拉", "平移", "升降", "吊臂", "手持", "斯坦尼康", "跟拍", "弧形"]
+  }
+}

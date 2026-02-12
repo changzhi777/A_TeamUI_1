@@ -1,0 +1,62 @@
+{
+  "name": "a-teamui-server",
+  "version": "1.0.0",
+  "description": "Backend server for A_TeamUI short drama platform",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "db:indexes": "tsx src/scripts/create-indexes.ts",
+    "db:backup": "tsx src/scripts/backup.ts",
+    "lint": "eslint src",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage"
+  },
+  "keywords": [
+    "backend",
+    "api",
+    "websocket",
+    "mysql",
+    "redis"
+  ],
+  "author": "",
+  "license": "MIT",
+  "packageManager": "pnpm@10.29.2",
+  "dependencies": {
+    "@hono/node-server": "^1.19.9",
+    "@hono/zod-validator": "^0.7.6",
+    "@types/bcryptjs": "^3.0.0",
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.38.4",
+    "hono": "^4.6.16",
+    "ioredis": "^5.6.0",
+    "jose": "^6.0.0",
+    "multer": "^2.0.2",
+    "mysql2": "^3.17.0",
+    "nanoid": "^5.1.5",
+    "sharp": "^0.34.5",
+    "ws": "^8.18.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/multer": "^2.0.0",
+    "@types/node": "^22.10.5",
+    "@types/ws": "^8.5.13",
+    "@vitest/coverage-v8": "^2.1.8",
+    "drizzle-kit": "^0.30.4",
+    "eslint": "^9.23.0",
+    "prettier": "^3.5.3",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.3",
+    "vitest": "^2.1.8"
+  }
+}
