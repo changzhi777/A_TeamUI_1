@@ -1,3 +1,4 @@
+import React from 'react'
 import { useSearch } from '@tanstack/react-router'
 import {
   Card,

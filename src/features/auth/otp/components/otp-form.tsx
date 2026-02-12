@@ -60,8 +60,8 @@ export function OtpForm({ className, type = 'verify', ...props }: OtpFormProps) 
     }
   })
 
-  const handleResend = () => {
-    const result = sendOtp()
+  const handleResend = async () => {
+    const result = await sendOtp()
     if (result.success) {
       setCountdown(60)
       setCanResend(false)
@@ -76,7 +76,7 @@ export function OtpForm({ className, type = 'verify', ...props }: OtpFormProps) 
 
     if (type === 'enable') {
       // 启用 OTP
-      const result = enableOtp(data.otp)
+      const result = await enableOtp(data.otp)
 
       setTimeout(() => {
         setIsLoading(false)
@@ -93,7 +93,7 @@ export function OtpForm({ className, type = 'verify', ...props }: OtpFormProps) 
       }, 500)
     } else {
       // 验证 OTP
-      const result = verifyOtp(data.otp)
+      const result = await verifyOtp(data.otp)
 
       setTimeout(() => {
         setIsLoading(false)

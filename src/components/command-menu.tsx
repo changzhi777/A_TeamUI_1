@@ -37,13 +37,14 @@ export function CommandMenu() {
           {sidebarData.navGroups.map((group) => (
             <CommandGroup key={group.title} heading={group.title}>
               {group.items.map((navItem, i) => {
-                if (navItem.url)
+                const navItemUrl = 'url' in navItem ? navItem.url : undefined
+                if (navItemUrl)
                   return (
                     <CommandItem
-                      key={`${navItem.url}-${i}`}
+                      key={`${navItemUrl}-${i}`}
                       value={navItem.title}
                       onSelect={() => {
-                        runCommand(() => navigate({ to: navItem.url }))
+                        runCommand(() => navigate({ to: navItemUrl }))
                       }}
                     >
                       <div className='flex size-4 items-center justify-center'>
@@ -52,21 +53,23 @@ export function CommandMenu() {
                       {navItem.title}
                     </CommandItem>
                   )
-
-                return navItem.items?.map((subItem, i) => (
-                  <CommandItem
-                    key={`${navItem.title}-${subItem.url}-${i}`}
-                    value={`${navItem.title}-${subItem.url}`}
-                    onSelect={() => {
-                      runCommand(() => navigate({ to: subItem.url }))
-                    }}
-                  >
-                    <div className='flex size-4 items-center justify-center'>
-                      <ArrowRight className='size-2 text-muted-foreground/80' />
-                    </div>
-                    {navItem.title} <ChevronRight /> {subItem.title}
-                  </CommandItem>
-                ))
+                return navItem.items?.map((subItem, i) => {
+                  const subItemUrl = 'url' in subItem ? subItem.url : undefined
+                  return (
+                    <CommandItem
+                      key={`${navItem.title}-${subItemUrl}-${i}`}
+                      value={`${navItem.title}-${subItem.title}`}
+                      onSelect={() => {
+                        runCommand(() => navigate({ to: subItemUrl }))
+                      }}
+                    >
+                      <div className='flex size-4 items-center justify-center'>
+                        <ArrowRight className='size-2 text-muted-foreground/80' />
+                      </div>
+                      {navItem.title} <ChevronRight /> {subItem.title}
+                    </CommandItem>
+                  )
+                })
               })}
             </CommandGroup>
           ))}
