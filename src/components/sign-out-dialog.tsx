@@ -19,7 +19,8 @@ export function SignOutDialog({ open, onOpenChange }: SignOutDialogProps) {
     const currentPath = location.href
     navigate({
       to: '/sign-in',
-      search: currentPath ? { redirect: currentPath } : undefined,
+      // 类型断言：search 可以接受对象或 undefined
+      search: currentPath ? { redirect: currentPath } as never : undefined,
       replace: true,
     })
   }
