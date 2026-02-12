@@ -4,17 +4,45 @@ import { projectsApi } from '@/lib/api/projects'
 import { getWebSocketClient } from '@/lib/websocket/client'
 import { handleServerError } from '@/lib/handle-server-error'
 import { toast } from 'sonner'
+// 导入API类型，用于类型兼容
+import type { Project as ApiProject } from '@/lib/types/api'
 
 // 项目类型定义
 export type ProjectStatus = 'planning' | 'filming' | 'postProduction' | 'completed'
 export type ProjectType = 'shortDrama' | 'realLifeDrama' | 'aiPodcast' | 'advertisement' | 'mv' | 'documentary' | 'other'
 export type MemberRole = 'admin' | 'member' | 'director' | 'screenwriter' | 'cinematographer' | 'editor' | 'actor'
 
+// Store 内部使用的 Project 类型（包含 members 字段）
+// 与 API Project 类型不同，API 返回的 Project 没有 members
+export interface Project {
+  id: string
+  name: string
+  description: string
+  type: ProjectType
+  status: ProjectStatus
+  episodeRange: string
+  createdAt: string
+  updatedAt: string
+  createdBy: string
+  director: string
+  members?: ProjectMember[]  // 可选成员列表
+  // 剧本相关
+  scriptContent?: string
+  scriptVersions?: ScriptVersion[]
+  // 分镜头统计
+  totalShots: number
+  completedShots: number
+  // 收藏和置顶
+  isFavorite: boolean
+  isPinned: boolean
+  pinnedAt?: string
+}
+
 export interface ProjectMember {
   id: string
   name: string
   email: string
-  role: MemberRole
+  role: MemberRole | string  // 允许 MemberRole 或 string（从 API 返回）
   joinedAt: string
 }
 
