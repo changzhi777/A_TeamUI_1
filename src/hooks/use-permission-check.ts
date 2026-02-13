@@ -16,6 +16,8 @@ export function usePermissionCheck() {
     canEditProject,
     canDeleteProject,
     canManageMembers: checkManageMembers,
+    canManageAsset,
+    canDeleteAsset,
   } = useAuthStore()
 
   /**
@@ -141,6 +143,30 @@ export function usePermissionCheck() {
     return true
   }
 
+  /**
+   * 检查是否可以管理资产
+   */
+  const checkManageAsset = (assetOwnerId: string): boolean => {
+    if (!requireAuth()) return false
+    if (!canManageAsset(assetOwnerId)) {
+      toast.error('您没有权限管理此资产')
+      return false
+    }
+    return true
+  }
+
+  /**
+   * 检查是否可以删除资产
+   */
+  const checkDeleteAsset = (assetOwnerId: string): boolean => {
+    if (!requireAuth()) return false
+    if (!canDeleteAsset(assetOwnerId)) {
+      toast.error('您没有权限删除此资产')
+      return false
+    }
+    return true
+  }
+
   return {
     user,
     isAuthenticated,
@@ -166,6 +192,8 @@ export function usePermissionCheck() {
     canEditScript,
     canEditStoryboard,
     canWriteProject,
+    canManageAsset: checkManageAsset,
+    canDeleteAsset: checkDeleteAsset,
   }
 }
 

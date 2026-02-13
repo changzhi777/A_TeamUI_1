@@ -48,3 +48,28 @@ TBD - created by archiving change fix-navigation-routes. Update Purpose after ar
 - **AND** `/storyboard` MUST 映射到 `/projects/$id/storyboard`
 - **AND** `/script` MUST 映射到 `/projects/$id/script`
 
+---
+
+## Delta: add-asset-management
+
+### ADD: 资产管理路由
+系统 SHALL 提供资产管理路由，用于访问全局资产库和项目资产。
+
+#### Scenario: 访问全局资产库
+- **WHEN** 用户点击侧边栏的"资产库"导航项
+- **THEN** 系统 MUST 导航到 `/assets` 路由
+- **AND** 显示全局资产库页面
+- **AND** 不需要项目上下文
+
+#### Scenario: 访问项目资产
+- **WHEN** 用户访问项目详情中的资产标签页
+- **THEN** 系统 MUST 导航到 `/projects/$id/assets` 路由
+- **AND** 显示该项目专属的资产页面
+- **AND** 仅项目成员可访问
+
+#### Scenario: 资产管理导航项不依赖项目上下文
+- **WHEN** 用户点击"资产库"导航项
+- **THEN** 系统 MUST 直接导航到全局资产库
+- **AND** 不检查项目上下文
+- **AND** 全局资产库包含所有用户可访问的资产
+

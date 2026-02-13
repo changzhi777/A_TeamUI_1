@@ -23,7 +23,7 @@ import {
 import { Link, useNavigate, useParams } from '@tanstack/react-router'
 import { useI18n } from '@/i18n'
 import { useProjectStore } from '@/stores/project-store'
-import { ArrowLeft, Users, Film, FileText, Settings, Video, Star, Pin } from 'lucide-react'
+import { ArrowLeft, Users, Film, FileText, Settings, Video, Star, Pin, Image } from 'lucide-react'
 import React, { useState, useEffect } from 'react'
 import { ProjectFormDialog } from './project-form-dialog'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
@@ -307,7 +307,7 @@ export function ProjectDetailPage() {
 
         {/* 快捷操作 */}
         <h2 className="text-xl font-semibold mb-4">快捷操作</h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5 mb-6">
           <QuickActionCard
             title="分镜头创作"
             description="创建和管理分镜头"
@@ -320,6 +320,13 @@ export function ProjectDetailPage() {
             description="编辑项目剧本"
             icon={FileText}
             to="/projects/$id/script"
+            params={{ id: project.id }}
+          />
+          <QuickActionCard
+            title="项目资产"
+            description="管理项目素材"
+            icon={Image}
+            to="/projects/$id/assets"
             params={{ id: project.id }}
           />
           <QuickActionCard

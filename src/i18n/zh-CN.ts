@@ -97,6 +97,7 @@ export const zhCN = {
     settings: '设置',
     profile: '个人资料',
     logout: '退出登录',
+    assets: '资产库',
     // 项目上下文相关
     needProjectTitle: '需要选择项目',
     needProjectDescription: '请先选择一个项目，或创建一个新项目来使用此功能。',
@@ -238,8 +239,6 @@ export const zhCN = {
     projectCreated: '项目创建成功',
     projectUpdated: '项目更新成功',
     projectDeleted: '项目删除成功',
-    memberAdded: '成员添加成功',
-    memberRemoved: '成员移除成功',
     statusUpdated: '状态更新成功',
   },
 
@@ -681,6 +680,138 @@ export const zhCN = {
     regenerate: '重新生成',
     generating: '生成中...',
     failed: '生成失败，请重试',
+  },
+
+  // 资产管理
+  assets: {
+    title: '资产管理',
+    assetLibrary: '资产库',
+    projectAssets: '项目资产',
+    uploadAsset: '上传资产',
+    uploadAssets: '上传资产',
+    selectFromLibrary: '从资产库选择',
+    noAssets: '暂无资产',
+    noAssetsDescription: '开始上传您的第一个资产吧',
+    noMatchingAssets: '没有找到匹配的资产',
+    tryDifferentFilters: '尝试使用其他筛选条件',
+    totalAssets: '共 {{count}} 个资产',
+
+    // 资产类型
+    type: {
+      image: '图片',
+      audio: '音频',
+      video: '视频',
+      script: '剧本',
+      aiGenerated: 'AI生成',
+    },
+
+    // 资产来源
+    source: {
+      upload: '本地上传',
+      external: '外部素材库',
+      ai: 'AI生成',
+      storage: '云存储',
+      link: '外部链接',
+    },
+
+    // 资产范围
+    scope: {
+      global: '全局资产',
+      project: '项目资产',
+    },
+
+    // 视图模式
+    viewMode: {
+      grid: '网格视图',
+      list: '列表视图',
+    },
+
+    // 筛选
+    filters: {
+      title: '筛选条件',
+      filterByType: '按类型筛选',
+      filterBySource: '按来源筛选',
+      filterByTags: '按标签筛选',
+      clearAll: '清除全部',
+      apply: '应用',
+      activeFilters: '{{count}} 个筛选',
+    },
+
+    // 搜索
+    searchPlaceholder: '搜索资产名称或描述...',
+    search: '搜索',
+    clearSearch: '清除搜索',
+
+    // 资产操作
+    preview: '预览',
+    edit: '编辑',
+    delete: '删除',
+    download: '下载',
+    copyLink: '复制链接',
+    addTag: '添加标签',
+    openOriginal: '打开原始链接',
+
+    // 批量操作
+    batchDelete: '批量删除',
+    batchMove: '批量移动',
+    selectedCount: '已选择 {{count}} 项',
+    selectAll: '全选',
+    deselectAll: '取消全选',
+
+    // 上传
+    uploadDialog: '上传资产',
+    selectFile: '选择文件',
+    dragDrop: '拖拽文件到此处上传',
+    supportedFormats: '支持的格式：{{formats}}',
+    maxFileSize: '最大文件大小：{{size}}',
+    uploadProgress: '上传中 {{progress}}%',
+    uploadSuccess: '上传成功',
+    uploadFailed: '上传失败',
+    cancelUpload: '取消上传',
+    retryUpload: '重试',
+
+    // 预览
+    previewDialog: '资产预览',
+    basicInfo: '基本信息',
+    uploadInfo: '上传信息',
+    fileSize: '大小',
+    duration: '时长',
+    dimensions: '尺寸',
+    uploader: '上传者',
+    createdAt: '创建时间',
+    updatedAt: '更新时间',
+    referenceCount: '引用次数',
+    aiGenerated: 'AI生成',
+    aiModel: '模型',
+    aiPrompt: '提示词',
+    originalLink: '原始链接',
+    noPreview: '该文件类型暂不支持预览',
+
+    // 编辑
+    editDialog: '编辑资产',
+    assetName: '资产名称',
+    assetDescription: '资产描述',
+    assetTags: '标签',
+    removeTag: '移除标签',
+    saveChanges: '保存更改',
+
+    // 删除确认
+    confirmDelete: '确认删除',
+    confirmDeleteMessage: '确定要删除资产"{{name}}"吗？此操作无法撤销。',
+    confirmDeleteBatch: '确定要删除选中的 {{count}} 个资产吗？此操作无法撤销。',
+    deleteWarning: '此资产正在被使用中',
+    deleteWarningMessage: '此资产被以下内容引用，删除后可能会导致问题：',
+    forceDelete: '强制删除',
+
+    // 统计
+    totalSize: '总大小',
+    uploadedThisMonth: '本月上传',
+    popularTags: '热门标签',
+    recentlyUploaded: '最近上传',
+
+    // 权限
+    noPermission: '您没有权限执行此操作',
+    adminOnly: '仅管理员可执行此操作',
   },
 }
 

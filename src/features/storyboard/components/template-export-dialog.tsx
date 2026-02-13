@@ -21,7 +21,7 @@ interface TemplateExportDialogProps {
 export type TemplateType = 'blank' | 'data'
 export type ExportFormat = 'csv' | 'json' | 'word'
 
-interface ExportConfig {
+export interface ExportConfig {
   templateType: TemplateType
   format: ExportFormat
   selectedColumns: string[]
@@ -118,7 +118,7 @@ export function TemplateExportDialog({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="w-[95vw] max-w-[1400px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Download className="h-5 w-5" />

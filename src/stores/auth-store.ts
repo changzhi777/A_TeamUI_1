@@ -25,6 +25,9 @@ export type Permission =
   | 'storyboard:read'
   | 'storyboard:write'
   | 'storyboard:delete'
+  | 'asset:read'
+  | 'asset:write'
+  | 'asset:delete'
 
 // 会话信息
 export interface Session {
@@ -131,6 +134,8 @@ interface AuthState {
   canEditProject: (projectOwnerId: string) => boolean
   canDeleteProject: (projectOwnerId: string) => boolean
   canManageMembers: (projectOwnerId: string) => boolean
+  canManageAsset: (assetOwnerId: string) => boolean
+  canDeleteAsset: (assetOwnerId: string) => boolean
 }
 
 // 角色权限映射
@@ -145,6 +150,9 @@ const rolePermissions: Record<UserRole, Permission[]> = {
     'storyboard:read',
     'storyboard:write',
     'storyboard:delete',
+    'asset:read',
+    'asset:write',
+    'asset:delete',
   ],
   admin: [
     'project:read',
@@ -156,6 +164,9 @@ const rolePermissions: Record<UserRole, Permission[]> = {
     'storyboard:read',
     'storyboard:write',
     'storyboard:delete',
+    'asset:read',
+    'asset:write',
+    'asset:delete',
   ],
   auditor: [
     'project:read',
@@ -164,6 +175,8 @@ const rolePermissions: Record<UserRole, Permission[]> = {
     'script:write',
     'storyboard:read',
     'storyboard:write',
+    'asset:read',
+    'asset:write',
   ],
   director: [
     'project:read',
@@ -173,10 +186,13 @@ const rolePermissions: Record<UserRole, Permission[]> = {
     'storyboard:read',
     'storyboard:write',
     'storyboard:delete',
+    'asset:read',
+    'asset:write',
+    'asset:delete',
   ],
-  screenwriter: ['project:read', 'script:read', 'script:write'],
-  editor: ['project:read', 'storyboard:read', 'storyboard:write', 'storyboard:delete'],
-  member: ['project:read', 'script:read', 'storyboard:read'],
+  screenwriter: ['project:read', 'script:read', 'script:write', 'asset:read'],
+  editor: ['project:read', 'storyboard:read', 'storyboard:write', 'storyboard:delete', 'asset:read', 'asset:write'],
+  member: ['project:read', 'script:read', 'storyboard:read', 'asset:read'],
 }
 
 // 角色层级（用于权限继承）
@@ -547,6 +563,34 @@ export const useAuthStore = create<AuthState>()(
 
         // 项目创建者可以管理成员
         return user.id === projectOwnerId
+      },
+
+      canManageAsset: (assetOwnerId) => {
+        const { user } = get()
+        if (!user) return false
+
+        // super_admin 和 admin 可以管理所有资产
+        if (user.role === 'super_admin' || user.role === 'admin') return true
+
+        // director 可以管理资产
+        if (user.role === 'director') return true
+
+        // 资产上传者可以管理自己的资产
+        return user.id === assetOwnerId
+      },
+
+      canDeleteAsset: (assetOwnerId) => {
+        const { user } = get()
+        if (!user) return false
+
+        // super_admin 和 admin 可以删除所有资产
+        if (user.role === 'super_admin' || user.role === 'admin') return true
+
+        // director 可以删除资产
+        if (user.role === 'director') return true
+
+        // 资产上传者可以删除自己的资产
+        return user.id === assetOwnerId
       },
     }),
     {

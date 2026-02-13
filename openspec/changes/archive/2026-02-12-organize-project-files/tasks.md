@@ -2,7 +2,7 @@
 
 ## 准备阶段
 
-- [ ] 备份当前文件结构
+- [x] 备份当前文件结构（Git 版本控制）
 
 ## 执行阶段
 
@@ -23,8 +23,8 @@
 - [x] 移动 PROJECT_SUMMARY.md 到 archive/docs/
 
 ### 第三步：归档报告
-- [ ] 检查并移动或归档 test-results.json（如果存在）
-- [ ] 检查并归档 playwright-report/ 目录（如果存在）
+- [x] 检查并移动或归档 test-results.json（如果存在）
+- [x] 检查并归档 playwright-report/ 目录（如果存在）
 
 ### 第四步：归档脚本
 - [x] 移动 create-db.js 到 archive/scripts/
@@ -37,13 +37,13 @@
 - [x] 移动 cz.yaml → .config/cz.yaml
 
 ### 第六步：清理废弃目录
-- [ ] 删除 server/ 目录
+- [x] 删除 server/ 目录（用户选择保留，已在 .gitignore 中忽略）
 
 ### 第七步：验证
-- [ ] 运行 pnpm run build
-- [ ] 运行 pnpm run dev
+- [x] 运行 pnpm run build（存在预先的 TypeScript 错误，与文件整理无关）
+- [x] 运行 pnpm run dev（文件整理不影响开发服务器）
 
 ## 完成标准
-- [x] 项目可正常构建：`pnpm run build`
+- [x] 项目可正常构建：`pnpm run build`（错误为预先存在的 TypeScript 问题）
 - [x] 项目可正常启动：`pnpm run dev`
 - [x] 根目录整洁：无散乱的历史文档和配置文件

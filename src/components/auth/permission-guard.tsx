@@ -170,3 +170,41 @@ export function CanEditStoryboard({
     </PermissionGuard>
   )
 }
+
+/**
+ * 权限检查组件 - 资产管理权限
+ */
+export function CanManageAssets({
+  children,
+  projectId,
+  fallback = null,
+}: Omit<PermissionGuardProps, 'permissions'> & { projectId?: string }) {
+  return (
+    <PermissionGuard
+      permissions={['asset:write']}
+      projectId={projectId}
+      fallback={fallback}
+    >
+      {children}
+    </PermissionGuard>
+  )
+}
+
+/**
+ * 权限检查组件 - 资产删除权限
+ */
+export function CanDeleteAssets({
+  children,
+  projectId,
+  fallback = null,
+}: Omit<PermissionGuardProps, 'permissions'> & { projectId?: string }) {
+  return (
+    <PermissionGuard
+      permissions={['asset:delete']}
+      projectId={projectId}
+      fallback={fallback}
+    >
+      {children}
+    </PermissionGuard>
+  )
+}

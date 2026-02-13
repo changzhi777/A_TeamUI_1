@@ -114,7 +114,7 @@ export function Step4_DataPreview({ parsedData, fieldMapping, onNext, onPrevious
       </Card>
 
       {mappedFields.length === 0 && (
-        <Alert variant="warning">
+        <Alert className="border-yellow-500 text-yellow-700">
           <AlertTitle>未映射任何字段</AlertTitle>
           <AlertDescription>
             请返回上一步设置字段映射，至少需要映射镜头编号和场次字段

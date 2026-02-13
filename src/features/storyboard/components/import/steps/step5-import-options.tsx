@@ -73,7 +73,7 @@ export function Step5_ImportOptions({ importMode, startShotNumber, validateData,
             </RadioGroup>
 
             {currentOptions.importMode === 'replace' && (
-              <Alert variant="warning" className="mt-4">
+              <Alert className="border-yellow-500 text-yellow-700 mt-4">
                 <AlertTitle>警告</AlertTitle>
                 <AlertDescription>
                   替换模式将删除所有现有分镜头数据，此操作不可撤销
@@ -134,7 +134,7 @@ export function Step5_ImportOptions({ importMode, startShotNumber, validateData,
         </Card>
       </div>
 
-      <Alert variant="info">
+      <Alert className="border-blue-500 text-blue-700">
         <AlertTitle>导入提示</AlertTitle>
         <AlertDescription>
           <ul className="text-xs space-y-1">

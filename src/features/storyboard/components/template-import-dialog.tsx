@@ -181,7 +181,7 @@ export function TemplateImportDialog({ open, onOpenChange, projectId }: Template
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="max-w-5xl p-4 sm:p-6">
+      <DialogContent className="w-[95vw] max-w-[1800px] max-h-[90vh] p-6 overflow-y-auto">
         <DialogHeader className="mb-4">
           <DialogTitle className="flex items-center gap-2 text-base sm:text-lg font-semibold">
             <Upload className="h-4 w-4 sm:h-5 sm:w-5" />

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import React from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -20,7 +21,9 @@ import {
 } from '@/components/ui/select'
 import { useStoryboardStore, type ShotSize, type CameraMovement } from '@/stores/storyboard-store'
 import { toast } from 'sonner'
-import { Upload, X } from 'lucide-react'
+import { Upload, X, Image as ImageIcon } from 'lucide-react'
+import { AssetSelector } from '@/features/assets/components/asset-selector'
+import type { Asset } from '@/lib/types/assets'
 
 interface ShotFormDialogProps {
   open: boolean
@@ -45,6 +48,7 @@ export function ShotFormDialog({ open, onOpenChange, projectId, shot }: ShotForm
   })
 
   const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [showAssetSelector, setShowAssetSelector] = useState(false)
 
   useEffect(() => {
     if (shot) {
@@ -102,6 +106,16 @@ export function ShotFormDialog({ open, onOpenChange, projectId, shot }: ShotForm
   const handleRemoveImage = () => {
     setFormData({ ...formData, image: '' })
     setImagePreview(null)
+  }
+
+  // 处理从资产选择器选择图片
+  const handleSelectFromAssets = (assets: Asset[]) => {
+    if (assets.length > 0) {
+      const selectedAsset = assets[0]
+      setFormData({ ...formData, image: selectedAsset.url })
+      setImagePreview(selectedAsset.thumbnailUrl || selectedAsset.url)
+    }
+    setShowAssetSelector(false)
   }
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -277,26 +291,53 @@ export function ShotFormDialog({ open, onOpenChange, projectId, shot }: ShotForm
                   </Button>
                 </div>
               ) : (
-                <div className="border-2 border-dashed rounded-lg p-8 text-center">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    className="hidden"
-                    id="image-upload"
-                  />
-                  <label
-                    htmlFor="image-upload"
-                    className="flex flex-col items-center cursor-pointer"
-                  >
-                    <Upload className="h-8 w-8 text-muted-foreground mb-2" />
-                    <span className="text-sm text-muted-foreground">
-                      点击上传图片
-                    </span>
-                    <span className="text-xs text-muted-foreground mt-1">
-                      支持 JPG、PNG，最大 2MB
-                    </span>
-                  </label>
+                <div className="border-2 border-dashed rounded-lg p-6 text-center space-y-4">
+                  <div className="flex flex-col gap-3">
+                    {/* 本地上传 */}
+                    <div>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        className="hidden"
+                        id="image-upload"
+                      />
+                      <label
+                        htmlFor="image-upload"
+                        className="flex flex-col items-center cursor-pointer py-4"
+                      >
+                        <Upload className="h-8 w-8 text-muted-foreground mb-2" />
+                        <span className="text-sm text-muted-foreground">
+                          点击上传图片
+                        </span>
+                        <span className="text-xs text-muted-foreground mt-1">
+                          支持 JPG、PNG，最大 2MB
+                        </span>
+                      </label>
+                    </div>
+
+                    <div className="relative">
+                      <div className="absolute inset-0 flex items-center">
+                        <span className="w-full border-t" />
+                      </div>
+                      <div className="relative flex justify-center text-xs uppercase">
+                        <span className="bg-background px-2 text-muted-foreground">
+                          或者
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* 从资产库选择 */}
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setShowAssetSelector(true)}
+                      className="w-full"
+                    >
+                      <ImageIcon className="mr-2 h-4 w-4" />
+                      从资产库选择
+                    </Button>
+                  </div>
                 </div>
               )}
             </div>
@@ -312,6 +353,16 @@ export function ShotFormDialog({ open, onOpenChange, projectId, shot }: ShotForm
           </DialogFooter>
         </form>
       </DialogContent>
+
+      {/* 资产选择器 */}
+      <AssetSelector
+        open={showAssetSelector}
+        onOpenChange={setShowAssetSelector}
+        onSelect={handleSelectFromAssets}
+        multiple={false}
+        allowedTypes={['image']}
+        title="选择配图"
+      />
     </Dialog>
   )
 }

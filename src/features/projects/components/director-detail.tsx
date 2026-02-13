@@ -1,11 +1,16 @@
-import { useMemo } from 'react'
-import { createFileRoute, Link } from '@tanstack/react-router'
-import { useParams } from '@tanstack/react-router'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+/**
+ * Director Detail Page
+ * 导演详情页面
+ */
+
+import React, { useMemo } from 'react'
+import { useParams, Link } from '@tanstack/react-router'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 import { useProjectStore } from '@/stores/project-store'
-import { ArrowLeft, Users, Film, FileText, Settings, Video, Star, Pin } from 'lucide-react'
+import { Film, Users, Clapperboard } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 
 function getStatusBadgeColor(status: string) {
   switch (status) {
@@ -25,21 +30,19 @@ function getStatusBadgeColor(status: string) {
 interface QuickActionCardProps {
   title: string
   description: string
-  icon: any
+  icon: LucideIcon
   to?: string
-  params?: any
   onClick?: () => void
 }
 
 function QuickActionCard({
   title,
   description,
-  icon,
+  icon: Icon,
   to,
-  params,
   onClick,
 }: QuickActionCardProps) {
-  const content = (
+  return (
     <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
       <CardHeader>
         <div className="flex items-center gap-4">
@@ -54,20 +57,16 @@ function QuickActionCard({
       </CardHeader>
     </Card>
   )
-
-  return content
 }
 
 export function DirectorDetailPage() {
-  const { t } = useI18n()
-  const navigate = useNavigate()
   const params = useParams({ strict: false })
-  const { id } = params
+  const directorId = (params as any).director || ''
   const projects = useProjectStore((state) => state.projects)
 
   const directorProjects = useMemo(() => {
-    return projects.filter((p): p && 'director' in p && p.director === id)
-  }, [projects, director] as any)
+    return projects.filter((p) => p.director === directorId)
+  }, [projects, directorId])
 
   const stats = useMemo(() => {
     const totalProjects = directorProjects.length
@@ -83,32 +82,62 @@ export function DirectorDetailPage() {
       completedShots,
       totalMembers,
     }
-  })
+  }, [directorProjects])
 
   return (
-    <div>
-      <Header />
-      <Main className="flex flex-col items-center justify-start">
-        <TopNav links={topNav} />
-        <ProfileDropdown />
-        <ThemeSwitch />
-      </Main>
-
-      <div className="max-w-2xl">
+    <div className="container mx-auto py-6">
+      <div className="max-w-4xl mx-auto space-y-6">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink to="/projects">项目</BreadcrumbLink>
+              <BreadcrumbLink asChild>
+                <Link to="/projects">项目</Link>
+              </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink to={`/directors/${id}`}>{t.director.name}</BreadcrumbLink>
+              <BreadcrumbPage>{directorId}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
 
-        <div className="flex items-start justify-between mb-4">
-          <h2 className="text-xl font-semibold mb-4">
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-2xl font-bold">{directorId}</h1>
+            <p className="text-muted-foreground">导演详情</p>
+          </div>
+        </div>
+
+        {/* 统计卡片 */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <Card>
+            <CardContent className="pt-6">
+              <div className="text-2xl font-bold">{stats.totalProjects}</div>
+              <div className="text-sm text-muted-foreground">参与项目</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="pt-6">
+              <div className="text-2xl font-bold">{stats.completedProjects}</div>
+              <div className="text-sm text-muted-foreground">已完成</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="pt-6">
+              <div className="text-2xl font-bold">{stats.totalShots}</div>
+              <div className="text-sm text-muted-foreground">总分镜</div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="pt-6">
+              <div className="text-2xl font-bold">{stats.totalMembers}</div>
+              <div className="text-sm text-muted-foreground">团队成员</div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="flex items-start justify-between">
+          <h2 className="text-xl font-semibold">
             项目列表 ({directorProjects.length})
           </h2>
         </div>
@@ -126,9 +155,29 @@ export function DirectorDetailPage() {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {directorProjects.map((project) => (
-              <DirectorProjectCard key={project.id} project={project} />
+              <Link key={project.id} to="/projects/$id" params={{ id: project.id }}>
+                <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
+                  <CardHeader>
+                    <CardTitle className="text-lg">{project.name}</CardTitle>
+                    <CardDescription>{project.description || '无描述'}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center gap-2">
+                      <Badge className={getStatusBadgeColor(project.status)}>
+                        {project.status === 'planning' ? '筹备中' :
+                         project.status === 'filming' ? '拍摄中' :
+                         project.status === 'postProduction' ? '后期制作' :
+                         project.status === 'completed' ? '已完成' : project.status}
+                      </Badge>
+                      <span className="text-sm text-muted-foreground">
+                        {project.completedShots}/{project.totalShots} 分镜
+                      </span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         )}

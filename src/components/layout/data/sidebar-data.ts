@@ -12,6 +12,7 @@ import {
   Clapperboard,
   FolderOpen,
   Table as TableIcon,
+  Image,
 } from 'lucide-react'
 import { type SidebarData, type SidebarUser } from '../types'
 
@@ -70,6 +71,17 @@ export const sidebarData: SidebarData = {
           title: '剧本编辑',
           url: '/script',
           icon: FileText,
+        },
+      ],
+    },
+    {
+      title: '资产管理',
+      items: [
+        {
+          title: '资产库',
+          url: '/assets',
+          icon: Image,
+          badge: '新',
         },
       ],
     },

@@ -168,7 +168,7 @@ export function Step3_FieldMapping({ parsedData, fieldMapping, onMappingChange, 
         </CardContent>
       </Card>
 
-      <Alert variant="warning" className="text-sm">
+      <Alert className="border-yellow-500 text-yellow-700 text-sm">
         <AlertCircle className="h-4 w-4 text-yellow-600 mt-0.5 flex-shrink-0" />
         <div>
           <AlertTitle className="font-medium">映射提示</AlertTitle>

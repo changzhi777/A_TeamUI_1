@@ -133,7 +133,7 @@ export function Step2_FormatValidation({ file, onValidationComplete, onNext, onP
                 </div>
 
                 {validationResult.warnings.length > 0 && (
-                  <Alert variant="warning">
+                  <Alert className="border-yellow-500 text-yellow-700">
                     <AlertTitle>警告</AlertTitle>
                     <AlertDescription>
                       {validationResult.warnings.map((warning, index) => (

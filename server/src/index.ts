@@ -83,8 +83,7 @@ async function start() {
   // Test Redis connection
   const redisOk = await testRedisConnection()
   if (!redisOk) {
-    console.error('❌ Failed to connect to Redis')
-    process.exit(1)
+    console.warn('⚠️  Failed to connect to Redis - some features may be limited')
   }
 
   // Start listening

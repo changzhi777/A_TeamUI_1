@@ -84,7 +84,7 @@ export function Step6_ImportResult({ result, status, totalCount, processedCount,
                 </div>
 
                 {result.success && result.errors.length === 0 && result.warnings.length === 0 && (
-                  <Alert variant="success">
+                  <Alert className="border-green-500 text-green-700">
                     <AlertTitle>导入成功</AlertTitle>
                     <AlertDescription>
                       所有数据已成功导入，无错误或警告
@@ -116,7 +116,7 @@ export function Step6_ImportResult({ result, status, totalCount, processedCount,
                 )}
 
                 {result.warnings.length > 0 && (
-                  <Alert variant="warning">
+                  <Alert className="border-yellow-500 text-yellow-700">
                     <AlertTitle>导入警告</AlertTitle>
                     <AlertDescription className="space-y-2">
                       {result.warnings.slice(0, 5).map((warning, index) => (

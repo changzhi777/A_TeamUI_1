@@ -29,6 +29,7 @@ import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-p
 import { Route as ClerkAuthenticatedRouteRouteImport } from './routes/clerk/_authenticated/route'
 import { Route as ClerkauthRouteRouteImport } from './routes/clerk/(auth)/route'
 import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authenticated/settings/route'
+import { Route as AuthenticatedAssetsRouteRouteImport } from './routes/_authenticated/assets/route'
 import { Route as AuthenticatedTeamIndexRouteImport } from './routes/_authenticated/team/index'
 import { Route as AuthenticatedStoryboardIndexRouteImport } from './routes/_authenticated/storyboard/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
@@ -47,6 +48,7 @@ import { Route as AuthenticatedDirectorDirectorRouteRouteImport } from './routes
 import { Route as AuthenticatedProjectsIdIndexRouteImport } from './routes/_authenticated/projects/$id/index'
 import { Route as AuthenticatedProjectsIdTeamRouteImport } from './routes/_authenticated/projects/$id/team'
 import { Route as AuthenticatedProjectsIdScriptRouteImport } from './routes/_authenticated/projects/$id/script'
+import { Route as AuthenticatedProjectsIdAssetsRouteRouteImport } from './routes/_authenticated/projects/$id/assets/route'
 import { Route as AuthenticatedProjectsIdStoryboardIndexRouteImport } from './routes/_authenticated/projects/$id/storyboard/index'
 
 const ClerkRouteRoute = ClerkRouteRouteImport.update({
@@ -147,6 +149,12 @@ const AuthenticatedSettingsRouteRoute =
   AuthenticatedSettingsRouteRouteImport.update({
     id: '/settings',
     path: '/settings',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAssetsRouteRoute =
+  AuthenticatedAssetsRouteRouteImport.update({
+    id: '/assets',
+    path: '/assets',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedTeamIndexRoute = AuthenticatedTeamIndexRouteImport.update({
@@ -254,6 +262,12 @@ const AuthenticatedProjectsIdScriptRoute =
     path: '/projects/$id/script',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedProjectsIdAssetsRouteRoute =
+  AuthenticatedProjectsIdAssetsRouteRouteImport.update({
+    id: '/projects/$id/assets',
+    path: '/projects/$id/assets',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedProjectsIdStoryboardIndexRoute =
   AuthenticatedProjectsIdStoryboardIndexRouteImport.update({
     id: '/projects/$id/storyboard/',
@@ -263,6 +277,7 @@ const AuthenticatedProjectsIdStoryboardIndexRoute =
 
 export interface FileRoutesByFullPath {
   '/clerk': typeof ClerkAuthenticatedRouteRouteWithChildren
+  '/assets': typeof AuthenticatedAssetsRouteRoute
   '/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
   '/forgot-password': typeof authForgotPasswordRoute
   '/otp': typeof authOtpRoute
@@ -294,6 +309,7 @@ export interface FileRoutesByFullPath {
   '/settings/': typeof AuthenticatedSettingsIndexRoute
   '/storyboard': typeof AuthenticatedStoryboardIndexRoute
   '/team/': typeof AuthenticatedTeamIndexRoute
+  '/projects/$id/assets': typeof AuthenticatedProjectsIdAssetsRouteRoute
   '/projects/$id/script': typeof AuthenticatedProjectsIdScriptRoute
   '/projects/$id/team': typeof AuthenticatedProjectsIdTeamRoute
   '/projects/$id': typeof AuthenticatedProjectsIdIndexRoute
@@ -301,6 +317,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/clerk': typeof ClerkAuthenticatedRouteRouteWithChildren
+  '/assets': typeof AuthenticatedAssetsRouteRoute
   '/forgot-password': typeof authForgotPasswordRoute
   '/otp': typeof authOtpRoute
   '/sign-in': typeof authSignInRoute
@@ -330,6 +347,7 @@ export interface FileRoutesByTo {
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/storyboard': typeof AuthenticatedStoryboardIndexRoute
   '/team': typeof AuthenticatedTeamIndexRoute
+  '/projects/$id/assets': typeof AuthenticatedProjectsIdAssetsRouteRoute
   '/projects/$id/script': typeof AuthenticatedProjectsIdScriptRoute
   '/projects/$id/team': typeof AuthenticatedProjectsIdTeamRoute
   '/projects/$id': typeof AuthenticatedProjectsIdIndexRoute
@@ -339,6 +357,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/clerk': typeof ClerkRouteRouteWithChildren
+  '/_authenticated/assets': typeof AuthenticatedAssetsRouteRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
   '/clerk/(auth)': typeof ClerkauthRouteRouteWithChildren
   '/clerk/_authenticated': typeof ClerkAuthenticatedRouteRouteWithChildren
@@ -372,6 +391,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/storyboard/': typeof AuthenticatedStoryboardIndexRoute
   '/_authenticated/team/': typeof AuthenticatedTeamIndexRoute
+  '/_authenticated/projects/$id/assets': typeof AuthenticatedProjectsIdAssetsRouteRoute
   '/_authenticated/projects/$id/script': typeof AuthenticatedProjectsIdScriptRoute
   '/_authenticated/projects/$id/team': typeof AuthenticatedProjectsIdTeamRoute
   '/_authenticated/projects/$id/': typeof AuthenticatedProjectsIdIndexRoute
@@ -381,6 +401,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/clerk'
+    | '/assets'
     | '/settings'
     | '/forgot-password'
     | '/otp'
@@ -412,6 +433,7 @@ export interface FileRouteTypes {
     | '/settings/'
     | '/storyboard'
     | '/team/'
+    | '/projects/$id/assets'
     | '/projects/$id/script'
     | '/projects/$id/team'
     | '/projects/$id'
@@ -419,6 +441,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/clerk'
+    | '/assets'
     | '/forgot-password'
     | '/otp'
     | '/sign-in'
@@ -448,6 +471,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/storyboard'
     | '/team'
+    | '/projects/$id/assets'
     | '/projects/$id/script'
     | '/projects/$id/team'
     | '/projects/$id'
@@ -456,6 +480,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_authenticated'
     | '/clerk'
+    | '/_authenticated/assets'
     | '/_authenticated/settings'
     | '/clerk/(auth)'
     | '/clerk/_authenticated'
@@ -489,6 +514,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/'
     | '/_authenticated/storyboard/'
     | '/_authenticated/team/'
+    | '/_authenticated/projects/$id/assets'
     | '/_authenticated/projects/$id/script'
     | '/_authenticated/projects/$id/team'
     | '/_authenticated/projects/$id/'
@@ -652,6 +678,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/assets': {
+      id: '/_authenticated/assets'
+      path: '/assets'
+      fullPath: '/assets'
+      preLoaderRoute: typeof AuthenticatedAssetsRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/team/': {
       id: '/_authenticated/team/'
       path: '/'
@@ -778,6 +811,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProjectsIdScriptRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/projects/$id/assets': {
+      id: '/_authenticated/projects/$id/assets'
+      path: '/projects/$id/assets'
+      fullPath: '/projects/$id/assets'
+      preLoaderRoute: typeof AuthenticatedProjectsIdAssetsRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/projects/$id/storyboard/': {
       id: '/_authenticated/projects/$id/storyboard/'
       path: '/projects/$id/storyboard'
@@ -823,6 +863,7 @@ const AuthenticatedTeamRouteWithChildren =
   AuthenticatedTeamRoute._addFileChildren(AuthenticatedTeamRouteChildren)
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAssetsRouteRoute: typeof AuthenticatedAssetsRouteRoute
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
   AuthenticatedStoryboardListRoute: typeof AuthenticatedStoryboardListRoute
   AuthenticatedStoryboardListSimpleRoute: typeof AuthenticatedStoryboardListSimpleRoute
@@ -835,6 +876,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedProjectsIndexRoute: typeof AuthenticatedProjectsIndexRoute
   AuthenticatedScriptIndexRoute: typeof AuthenticatedScriptIndexRoute
   AuthenticatedStoryboardIndexRoute: typeof AuthenticatedStoryboardIndexRoute
+  AuthenticatedProjectsIdAssetsRouteRoute: typeof AuthenticatedProjectsIdAssetsRouteRoute
   AuthenticatedProjectsIdScriptRoute: typeof AuthenticatedProjectsIdScriptRoute
   AuthenticatedProjectsIdTeamRoute: typeof AuthenticatedProjectsIdTeamRoute
   AuthenticatedProjectsIdIndexRoute: typeof AuthenticatedProjectsIdIndexRoute
@@ -842,6 +884,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAssetsRouteRoute: AuthenticatedAssetsRouteRoute,
   AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
   AuthenticatedStoryboardListRoute: AuthenticatedStoryboardListRoute,
   AuthenticatedStoryboardListSimpleRoute:
@@ -856,6 +899,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedProjectsIndexRoute: AuthenticatedProjectsIndexRoute,
   AuthenticatedScriptIndexRoute: AuthenticatedScriptIndexRoute,
   AuthenticatedStoryboardIndexRoute: AuthenticatedStoryboardIndexRoute,
+  AuthenticatedProjectsIdAssetsRouteRoute:
+    AuthenticatedProjectsIdAssetsRouteRoute,
   AuthenticatedProjectsIdScriptRoute: AuthenticatedProjectsIdScriptRoute,
   AuthenticatedProjectsIdTeamRoute: AuthenticatedProjectsIdTeamRoute,
   AuthenticatedProjectsIdIndexRoute: AuthenticatedProjectsIdIndexRoute,
