@@ -1,3 +1,12 @@
+/**
+ * use-permission-check
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import { useAuthStore } from '@/stores/auth-store'
 import { type Permission } from '@/stores/auth-store'
 import { toast } from 'sonner'

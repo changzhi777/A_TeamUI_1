@@ -1,3 +1,12 @@
+/**
+ * word
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import { Document, Packer, Paragraph, TextRun, ImageRun, AlignmentType, HeadingLevel, Table, TableRow, TableCell, WidthType, BorderStyle } from 'docx'
 import type { Project, StoryboardShot } from '@/stores'
 import { formatDateTime } from '@/lib/utils'

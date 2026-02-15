@@ -1,5 +1,15 @@
+/**
+ * pdf
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import jsPDF from 'jspdf'
-import type { Project, StoryboardShot } from '@/stores'
+import type { Project, StoryboardShot, CustomFieldValue } from '@/stores'
+import type { CustomFieldConfig } from '@/lib/types/api'
 import { formatDateTime } from '@/lib/utils'
 
 // 中文标签映射
@@ -23,6 +33,40 @@ const cameraMovementLabels: Record<string, string> = {
   steadicam: '斯坦尼康',
   tracking: '跟拍',
   arc: '弧形',
+}
+
+// Format custom field value for PDF display
+function formatCustomFieldValuePDF(value: CustomFieldValue, field: CustomFieldConfig): string {
+  if (value === null || value === undefined) return '-'
+
+  switch (field.type) {
+    case 'text':
+    case 'textarea':
+    case 'date':
+      return String(value)
+    case 'number':
+      return String(value)
+    case 'checkbox':
+      return value ? '是' : '否'
+    case 'select':
+      if (field.options && typeof value === 'string') {
+        const index = parseInt(value, 10)
+        return field.options[index] || String(value)
+      }
+      return String(value)
+    case 'multiselect':
+      if (Array.isArray(value) && field.options) {
+        return value
+          .map((v) => {
+            const index = parseInt(v, 10)
+            return field.options![index] || v
+          })
+          .join(', ')
+      }
+      return Array.isArray(value) ? value.join(', ') : '-'
+    default:
+      return String(value)
+  }
 }
 
 // 将图片转换为 Base64
@@ -50,7 +94,8 @@ function loadImage(src: string): Promise<HTMLImageElement> {
 
 export async function exportToPDF(
   project: Project,
-  shots: StoryboardShot[]
+  shots: StoryboardShot[],
+  customFields?: CustomFieldConfig[]
 ): Promise<void> {
   const doc = new jsPDF('p', 'mm', 'a4')
   const pageWidth = doc.internal.pageSize.getWidth()
@@ -68,19 +113,19 @@ export async function exportToPDF(
   doc.text(project.name, pageWidth / 2, 40, { align: 'center' })
 
   doc.setFontSize(12)
-  doc.text(`项目: ${project.name}`, pageWidth / 2, 55, { align: 'center' })
-  doc.text(`类型: ${project.type}`, pageWidth / 2, 62, { align: 'center' })
-  doc.text(`状态: ${project.status}`, pageWidth / 2, 69, { align: 'center' })
-  doc.text(`创建时间: ${formatDateTime(project.createdAt)}`, pageWidth / 2, 76, { align: 'center' })
-  doc.text(`更新时间: ${formatDateTime(project.updatedAt)}`, pageWidth / 2, 83, { align: 'center' })
-  doc.text(`分镜头数: ${shots.length}`, pageWidth / 2, 90, { align: 'center' })
+  doc.text(`Project: ${project.name}`, pageWidth / 2, 55, { align: 'center' })
+  doc.text(`Type: ${project.type}`, pageWidth / 2, 62, { align: 'center' })
+  doc.text(`Status: ${project.status}`, pageWidth / 2, 69, { align: 'center' })
+  doc.text(`Created: ${formatDateTime(project.createdAt)}`, pageWidth / 2, 76, { align: 'center' })
+  doc.text(`Updated: ${formatDateTime(project.updatedAt)}`, pageWidth / 2, 83, { align: 'center' })
+  doc.text(`Shots: ${shots.length}`, pageWidth / 2, 90, { align: 'center' })
 
   // 计算总时长
   const totalDuration = shots.reduce((sum, shot) => sum + shot.duration, 0)
   const minutes = Math.floor(totalDuration / 60)
   const seconds = totalDuration % 60
   doc.text(
-    `总时长: ${minutes}:${seconds.toString().padStart(2, '0')}`,
+    `Duration: ${minutes}:${seconds.toString().padStart(2, '0')}`,
     pageWidth / 2,
     97,
     { align: 'center' }
@@ -92,7 +137,7 @@ export async function exportToPDF(
 
   // 分镜头列表标题
   doc.setFontSize(18)
-  doc.text('分镜头脚本', margin, yPosition)
+  doc.text('Storyboard', margin, yPosition)
   yPosition += 15
 
   // 遍历每个分镜头
@@ -108,32 +153,50 @@ export async function exportToPDF(
     // 镜头编号
     doc.setFontSize(14)
     doc.setFont('helvetica', 'bold')
-    doc.text(`镜头 #${shot.shotNumber}`, margin, yPosition)
+    // Include season/episode in header if available
+    const shotHeader = shot.seasonNumber || shot.episodeNumber
+      ? `Shot #${shot.shotNumber} (S${shot.seasonNumber || '-'}E${shot.episodeNumber || '-'})`
+      : `Shot #${shot.shotNumber}`
+    doc.text(shotHeader, margin, yPosition)
     yPosition += 8
 
     doc.setFontSize(10)
     doc.setFont('helvetica', 'normal')
 
-    // 基本信息
-    const infoY = yPosition
-    doc.text(`场次: ${shot.sceneNumber || '未设置'}`, margin, infoY)
+    // 基本信息 - 第一行
+    const infoY1 = yPosition
+    doc.text(`Scene: ${shot.sceneNumber || '-'}`, margin, infoY1)
     doc.text(
-      `景别: ${shotSizeLabels[shot.shotSize] || shot.shotSize}`,
+      `Size: ${shotSizeLabels[shot.shotSize] || shot.shotSize}`,
       margin + 40,
-      infoY
+      infoY1
     )
     doc.text(
-      `运镜: ${cameraMovementLabels[shot.cameraMovement] || shot.cameraMovement}`,
+      `Movement: ${cameraMovementLabels[shot.cameraMovement] || shot.cameraMovement}`,
       margin + 80,
-      infoY
+      infoY1
     )
-    doc.text(`时长: ${shot.duration}s`, margin + 130, infoY)
-    yPosition += 10
+    doc.text(`Duration: ${shot.duration}s`, margin + 130, infoY1)
+    yPosition += 6
+
+    // 季数/集数 - 第二行（如果有）
+    if (shot.seasonNumber || shot.episodeNumber) {
+      const infoY2 = yPosition
+      if (shot.seasonNumber) {
+        doc.text(`Season: ${shot.seasonNumber}`, margin, infoY2)
+      }
+      if (shot.episodeNumber) {
+        doc.text(`Episode: ${shot.episodeNumber}`, margin + 40, infoY2)
+      }
+      yPosition += 6
+    }
+
+    yPosition += 4
 
     // 画面描述
     if (shot.description) {
       const lines = doc.splitTextToSize(shot.description, contentWidth - 30)
-      doc.text('画面:', margin, yPosition)
+      doc.text('Description:', margin, yPosition)
       yPosition += 6
       doc.text(lines, margin + 5, yPosition)
       yPosition += lines.length * 5 + 5
@@ -142,7 +205,7 @@ export async function exportToPDF(
     // 对白
     if (shot.dialogue) {
       const lines = doc.splitTextToSize(`"${shot.dialogue}"`, contentWidth - 30)
-      doc.text('对白:', margin, yPosition)
+      doc.text('Dialogue:', margin, yPosition)
       yPosition += 6
       doc.text(lines, margin + 5, yPosition)
       yPosition += lines.length * 5 + 5
@@ -151,10 +214,27 @@ export async function exportToPDF(
     // 音效
     if (shot.sound) {
       const lines = doc.splitTextToSize(shot.sound, contentWidth - 30)
-      doc.text('音效:', margin, yPosition)
+      doc.text('Sound:', margin, yPosition)
       yPosition += 6
       doc.text(lines, margin + 5, yPosition)
       yPosition += lines.length * 5 + 5
+    }
+
+    // 自定义字段
+    if (customFields && customFields.length > 0 && shot.customFields) {
+      for (const field of customFields) {
+        const value = shot.customFields[field.id]
+        if (value !== null && value !== undefined) {
+          const displayValue = formatCustomFieldValuePDF(value, field)
+          if (displayValue && displayValue !== '-') {
+            const lines = doc.splitTextToSize(displayValue, contentWidth - 30)
+            doc.text(`${field.name}:`, margin, yPosition)
+            yPosition += 6
+            doc.text(lines, margin + 5, yPosition)
+            yPosition += lines.length * 5 + 5
+          }
+        }
+      }
     }
 
     // 配图（如果有）
@@ -200,6 +280,6 @@ export async function exportToPDF(
   }
 
   // 下载文件
-  const fileName = `${project.name}_分镜头脚本_${new Date().toISOString().split('T')[0]}.pdf`
+  const fileName = `${project.name}_Storyboard_${new Date().toISOString().split('T')[0]}.pdf`
   doc.save(fileName)
 }

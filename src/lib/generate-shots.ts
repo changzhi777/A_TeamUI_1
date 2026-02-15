@@ -1,3 +1,12 @@
+/**
+ * generate-shots
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import { useStoryboardStore } from '@/stores/storyboard-store'
 import { useProjectStore } from '@/stores/project-store'
 import { generateMockShots } from '@/lib/mock-shots'

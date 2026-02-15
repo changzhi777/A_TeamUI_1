@@ -1,3 +1,12 @@
+/**
+ * storyboard-list-page
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import { useState, useMemo, useEffect } from 'react'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
@@ -18,6 +27,7 @@ import {
 import { Link } from '@tanstack/react-router'
 import { useStoryboardStore, type StoryboardShot } from '@/stores/storyboard-store'
 import { useProjectStore } from '@/stores/project-store'
+import { useCustomFieldStore, formatFieldValue } from '@/stores/custom-field-store'
 import { ShotListTable } from './shot-list-table'
 import { ShotFormDialog } from './shot-form-dialog'
 import { TemplateExportDialog } from './template-export-dialog'
@@ -97,10 +107,16 @@ export function StoryboardListPage() {
     }
   }
 
+  // Get custom fields for the current project scope
+  const { getMergedFields } = useCustomFieldStore()
+  const customFields = selectedProjectId === 'all' ? [] : getMergedFields(selectedProjectId)
+
   // 导出为 CSV
   const handleExportCSV = () => {
-    // CSV 表头
-    const headers = ['镜头编号', '场次', '景别', '运镜方式', '时长', '画面描述', '对白/旁白', '音效说明', '项目']
+    // CSV 表头 - 包含固定字段和自定义字段
+    const baseHeaders = ['镜头编号', '季数', '集数', '场次', '景别', '运镜方式', '时长', '画面描述', '对白/旁白', '音效说明', '项目']
+    const customHeaders = customFields.map((f) => f.name)
+    const headers = [...baseHeaders, ...customHeaders]
 
     // 转换函数
     const getShotSizeLabel = (size: string) => {
@@ -142,18 +158,36 @@ export function StoryboardListPage() {
       return project?.name || '未知项目'
     }
 
+    const escapeCSV = (value: string) => {
+      if (!value) return ''
+      return `"${value.replace(/"/g, '""')}"`
+    }
+
     // 转换数据
-    const rows = filteredShots.map((shot) => [
-      shot.shotNumber,
-      shot.sceneNumber,
-      getShotSizeLabel(shot.shotSize),
-      getCameraMovementLabel(shot.cameraMovement),
-      formatDuration(shot.duration),
-      `"${shot.description.replace(/"/g, '""')}"`, // 处理逗号和引号
-      `"${(shot.dialogue || '').replace(/"/g, '""')}"`,
-      `"${(shot.sound || '').replace(/"/g, '""')}"`,
-      `"${getProjectName(shot.projectId)}"`,
-    ])
+    const rows = filteredShots.map((shot) => {
+      const baseValues = [
+        shot.shotNumber,
+        shot.seasonNumber ?? '',
+        shot.episodeNumber ?? '',
+        shot.sceneNumber,
+        getShotSizeLabel(shot.shotSize),
+        getCameraMovementLabel(shot.cameraMovement),
+        formatDuration(shot.duration),
+        escapeCSV(shot.description),
+        escapeCSV(shot.dialogue || ''),
+        escapeCSV(shot.sound || ''),
+        escapeCSV(getProjectName(shot.projectId)),
+      ]
+
+      // Add custom field values
+      const customValues = customFields.map((field) => {
+        const value = shot.customFields?.[field.id] ?? null
+        const formattedValue = formatFieldValue(value, field)
+        return escapeCSV(formattedValue)
+      })
+
+      return [...baseValues, ...customValues]
+    })
 
     // 组合 CSV
     const csvContent = [

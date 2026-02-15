@@ -1,4 +1,13 @@
 /**
+ * lazy-load
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
+/**
  * Image lazy loading utilities
  *
  * Provides utilities for lazy loading images and optimizing page load performance

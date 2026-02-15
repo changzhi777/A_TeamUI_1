@@ -1,5 +1,14 @@
+/**
+ * index
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import { Outlet } from '@tanstack/react-router'
-import { Monitor, Bell, Palette, Wrench, UserCog } from 'lucide-react'
+import { Monitor, Bell, Palette, Wrench, UserCog, Key } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
 import { ConfigDrawer } from '@/components/config-drawer'
 import { Header } from '@/components/layout/header'
@@ -8,6 +17,7 @@ import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { SidebarNav } from './components/sidebar-nav'
+import { VersionInfo } from './components/version-info'
 import { useI18n } from '@/i18n'
 
 export function Settings() {
@@ -39,6 +49,11 @@ export function Settings() {
       href: '/settings/display',
       icon: <Monitor size={18} />,
     },
+    {
+      title: t.settings.nav.api,
+      href: '/settings/api',
+      icon: <Key size={18} />,
+    },
   ]
 
   return (
@@ -67,8 +82,9 @@ export function Settings() {
           <aside className='top-0 lg:sticky lg:w-1/5'>
             <SidebarNav items={sidebarNavItems} />
           </aside>
-          <div className='flex w-full overflow-y-hidden p-1'>
+          <div className='flex w-full flex-1 flex-col overflow-y-auto p-1'>
             <Outlet />
+            <VersionInfo />
           </div>
         </div>
       </Main>

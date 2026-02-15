@@ -1,3 +1,12 @@
+/**
+ * storyboard-store
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { storyboardApi } from '@/lib/api/storyboard'
@@ -11,11 +20,16 @@ export type ShotSize = 'extremeLong' | 'long' | 'medium' | 'closeUp' | 'extremeC
 export type CameraMovement = 'static' | 'pan' | 'tilt' | 'dolly' | 'truck' | 'pedestral' | 'crane' | 'handheld' | 'steadicam' | 'tracking' | 'arc'
 export type ViewMode = 'list' | 'timeline' | 'grid'
 
+// 自定义字段值类型
+export type CustomFieldValue = string | number | boolean | string[] | null
+
 export interface StoryboardShot {
   id: string
   projectId: string
   // 基本信息
   shotNumber: number
+  seasonNumber?: number // 新增：季数
+  episodeNumber?: number // 新增：集数
   sceneNumber: string
   // 镜头参数
   shotSize: ShotSize
@@ -28,6 +42,8 @@ export interface StoryboardShot {
   // 配图
   image?: string // Base64 或图片 URL
   imageThumbnail?: string // 缩略图
+  // 自定义字段值
+  customFields?: Record<string, CustomFieldValue>
   // 元数据
   createdAt: string
   updatedAt: string
@@ -87,6 +103,10 @@ interface StoryboardState {
 
   // 批量操作
   duplicateShots: (shotIds: string[]) => Promise<void>
+
+  // 本地添加方法（用于导入等场景）
+  addShot: (shot: Omit<StoryboardShot, 'id' | 'createdAt' | 'updatedAt'>) => string
+  addShots: (shots: Omit<StoryboardShot, 'id' | 'createdAt' | 'updatedAt'>[]) => void
 
   // 视图模式
   setViewMode: (mode: ViewMode) => void
@@ -520,6 +540,40 @@ export const useStoryboardStore = create<StoryboardState>()(
             syncStatus: 'error',
           })
         }
+      },
+
+      // 本地添加单个分镜头（用于导入等场景，不调用 API）
+      addShot: (data) => {
+        const id = `shot-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+        const now = new Date().toISOString()
+
+        const newShot: StoryboardShot = {
+          id,
+          ...data,
+          createdAt: now,
+          updatedAt: now,
+        } as StoryboardShot
+
+        set((state) => ({
+          shots: [...state.shots, newShot],
+        }))
+
+        return id
+      },
+
+      // 本地批量添加分镜头（用于导入等场景，不调用 API）
+      addShots: (shotsData) => {
+        const now = new Date().toISOString()
+        const newShots: StoryboardShot[] = shotsData.map((data, index) => ({
+          id: `shot-${Date.now()}-${index}-${Math.random().toString(36).substr(2, 9)}`,
+          ...data,
+          createdAt: now,
+          updatedAt: now,
+        })) as StoryboardShot[]
+
+        set((state) => ({
+          shots: [...state.shots, ...newShots],
+        }))
       },
 
       // 设置视图模式

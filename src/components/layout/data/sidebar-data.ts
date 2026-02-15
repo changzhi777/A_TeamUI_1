@@ -1,3 +1,12 @@
+/**
+ * sidebar-data
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import {
   Video,
   FileText,
@@ -13,6 +22,11 @@ import {
   FolderOpen,
   Table as TableIcon,
   Image,
+  Users,
+  BookOpen,
+  Key,
+  Shield,
+  ListOrdered,
 } from 'lucide-react'
 import { type SidebarData, type SidebarUser } from '../types'
 
@@ -72,6 +86,12 @@ export const sidebarData: SidebarData = {
           url: '/script',
           icon: FileText,
         },
+        {
+          title: '角色设计',
+          url: '/character',
+          icon: Users,
+          badge: '新',
+        },
       ],
     },
     {
@@ -81,6 +101,17 @@ export const sidebarData: SidebarData = {
           title: '资产库',
           url: '/assets',
           icon: Image,
+          badge: '新',
+        },
+      ],
+    },
+    {
+      title: '系统状态',
+      items: [
+        {
+          title: '任务队列',
+          url: '/system/tasks',
+          icon: ListOrdered,
           badge: '新',
         },
       ],
@@ -111,6 +142,29 @@ export const sidebarData: SidebarData = {
               title: '通知设置',
               url: '/settings/notifications',
               icon: Bell,
+            },
+            {
+              title: 'API 管理',
+              url: '/settings/api',
+              icon: Key,
+            },
+            {
+              title: 'API 文档',
+              url: '/settings/api-docs',
+              icon: BookOpen,
+              badge: 'API',
+              permission: {
+                roles: ['super_admin', 'admin', 'director'],
+              },
+            },
+            {
+              title: '用户管理',
+              url: '/settings/users',
+              icon: Shield,
+              badge: '超管',
+              permission: {
+                roles: ['super_admin'],
+              },
             },
           ],
         },

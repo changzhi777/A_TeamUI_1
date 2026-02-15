@@ -1,4 +1,13 @@
 /**
+ * asset-filters
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
+/**
  * Asset Filters Component
  * 资产筛选组件
  */
@@ -18,7 +27,7 @@ import { useAssetStore } from '@/stores/asset-store'
 import type { AssetType, AssetSource } from '@/lib/types/assets'
 import { getAssetTypeName, getAssetSourceName } from '@/lib/types/assets'
 
-const ASSET_TYPES: AssetType[] = ['image', 'audio', 'video', 'script', 'aiGenerated']
+const ASSET_TYPES: AssetType[] = ['image', 'audio', 'video', 'script', 'aiGenerated', 'character']
 const ASSET_SOURCES: AssetSource[] = ['upload', 'external', 'ai', 'storage', 'link']
 
 export function AssetFilters() {

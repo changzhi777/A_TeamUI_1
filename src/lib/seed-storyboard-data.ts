@@ -1,3 +1,12 @@
+/**
+ * seed-storyboard-data
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import { useStoryboardStore } from '@/stores/storyboard-store'
 import { useProjectStore, type ProjectType } from '@/stores/project-store'
 import { generateMockShots } from '@/lib/mock-shots'
@@ -59,6 +68,8 @@ export function seedShotsForProject(
 
     addShot({
       projectId,
+      seasonNumber: 1, // 默认第一季
+      episodeNumber: (i % 10) + 1, // 循环分配集数 1-10
       sceneNumber,
       shotSize: template.shotSize,
       cameraMovement: template.cameraMovement,

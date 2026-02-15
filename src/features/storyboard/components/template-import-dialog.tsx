@@ -1,8 +1,17 @@
+/**
+ * template-import-dialog
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import { useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Steps, Step } from '@/components/ui/steps'
 import { Progress } from '@/components/ui/progress'
-import { Upload } from 'lucide-react'
+import { Upload, FolderOpen } from 'lucide-react'
 import { Step1_FileUpload } from './import/steps/step1-file-upload'
 import { Step2_FormatValidation } from './import/steps/step2-format-validation'
 import { Step3_FieldMapping } from './import/steps/step3-field-mapping'
@@ -12,6 +21,7 @@ import { Step6_ImportResult } from './import/steps/step6-import-result'
 import { convertToStoryboardShot, type ImportResult as ParserImportResult, type ParsedShot } from '@/lib/import/template'
 import type { StoryboardShot } from '@/stores'
 import { useStoryboardStore } from '@/stores/storyboard-store'
+import { useProjectStore } from '@/stores/project-store'
 import { toast } from 'sonner'
 
 interface TemplateImportDialogProps {
@@ -56,6 +66,11 @@ export function TemplateImportDialog({ open, onOpenChange, projectId }: Template
   const addShots = useStoryboardStore((state) => state.addShots)
   const deleteShots = useStoryboardStore((state) => state.deleteShots)
   const getShotsByProject = useStoryboardStore((state) => state.getShotsByProject)
+  const getProjectById = useProjectStore((state) => state.getProjectById)
+
+  // 获取项目名称
+  const project = getProjectById(projectId)
+  const projectName = project?.name || '未知项目'
 
   const totalSteps = 6
 
@@ -181,27 +196,51 @@ export function TemplateImportDialog({ open, onOpenChange, projectId }: Template
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="w-[95vw] max-w-[1800px] max-h-[90vh] p-6 overflow-y-auto">
-        <DialogHeader className="mb-4">
-          <DialogTitle className="flex items-center gap-2 text-base sm:text-lg font-semibold">
-            <Upload className="h-4 w-4 sm:h-5 sm:w-5" />
-            导入分镜头向导
-          </DialogTitle>
-        </DialogHeader>
+      <DialogContent className="p-0" defaultWidth={1100} defaultHeight={650}>
+        {/* 横版布局：左侧进度 + 右侧内容 */}
+        <div className="flex h-[600px]">
+          {/* 左侧：竖置进度区域 */}
+          <div className="w-56 border-e bg-muted/30 p-4 flex flex-col flex-shrink-0">
+            <DialogHeader className="mb-4">
+              <DialogTitle className="flex items-center gap-2 text-base font-semibold">
+                <Upload className="h-4 w-4" />
+                导入分镜头向导
+              </DialogTitle>
+              {/* 项目名称 */}
+              <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1 pt-2 border-t">
+                <FolderOpen className="h-3 w-3" />
+                <span className="truncate">{projectName}</span>
+              </div>
+            </DialogHeader>
 
-        <div className="space-y-4 sm:space-y-6">
-          <Steps currentStep={currentStep} maxStep={6}>
-            <Step step={1} title="上传文件" />
-            <Step step={2} title="格式验证" />
-            <Step step={3} title="字段映射" />
-            <Step step={4} title="数据预览" />
-            <Step step={5} title="导入选项" />
-            <Step step={6} title="导入结果" />
-          </Steps>
+            {/* 竖置步骤 */}
+            <Steps currentStep={currentStep} maxStep={6} orientation="vertical" className="flex-1">
+              <Step step={1} title="上传文件" />
+              <Step step={2} title="格式验证" />
+              <Step step={3} title="字段映射" />
+              <Step step={4} title="数据预览" />
+              <Step step={5} title="导入选项" />
+              <Step step={6} title="导入结果" />
+            </Steps>
 
-          <Progress value={(currentStep / totalSteps) * 100} />
+            {/* 底部竖置进度条 */}
+            <div className="mt-4 pt-4 border-t">
+              <div className="flex items-center gap-3">
+                <Progress
+                  value={(currentStep / totalSteps) * 100}
+                  orientation="vertical"
+                  className="h-16 w-2"
+                />
+                <div className="text-xs text-muted-foreground">
+                  <div>步骤 {currentStep}/{totalSteps}</div>
+                  <div className="font-medium text-foreground">{Math.round((currentStep / totalSteps) * 100)}%</div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-          <div className="space-y-4">
+          {/* 右侧：内容区域 */}
+          <div className="flex-1 p-6 overflow-y-auto">
             {currentStep === 1 && (
               <Step1_FileUpload
                 onFileSelected={(file) => handleConfigChange({ file })}
@@ -225,6 +264,7 @@ export function TemplateImportDialog({ open, onOpenChange, projectId }: Template
                 onMappingChange={(mapping) => handleConfigChange({ fieldMapping: mapping })}
                 onNext={handleNext}
                 onPrevious={handlePrevious}
+                projectId={projectId}
               />
             )}
 
@@ -234,6 +274,7 @@ export function TemplateImportDialog({ open, onOpenChange, projectId }: Template
                 fieldMapping={config.fieldMapping}
                 onNext={handleNext}
                 onPrevious={handlePrevious}
+                projectId={projectId}
               />
             )}
 

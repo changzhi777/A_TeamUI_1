@@ -1,9 +1,19 @@
+/**
+ * index
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 import { prettyJSON } from 'hono/pretty-json'
 import { serveStatic } from '@hono/node-server/serve-static'
-import { createServer } from 'node:http'
+import { serve } from '@hono/node-server'
+import { apiReference } from '@scalar/hono-api-reference'
 import { env } from './config'
 import { testDatabaseConnection, db, closeDatabaseConnection } from './config/database'
 import { testRedisConnection, redis, closeRedisConnection } from './config/redis'
@@ -15,6 +25,9 @@ import { storyboardRouter } from './api/storyboard'
 import { usersRouter } from './api/users'
 import { uploadRouter } from './api/upload'
 import { membersRouter } from './api/members'
+import { tasksRouter } from './api/tasks'
+import { openApiDocument } from './api/openapi'
+import { startTaskWorker, stopTaskWorker } from './services/task-worker'
 
 const app = new Hono()
 
@@ -53,13 +66,43 @@ app.route('/api', storyboardRouter)  // Routes are /api/shots/*, /api/reorder, /
 app.route('/api/users', usersRouter)
 app.route('/api/upload', uploadRouter)
 app.route('/api/members', membersRouter)
+app.route('/api/tasks', tasksRouter)
+
+// API Documentation (Swagger UI)
+if (env.apiDocs.enabled) {
+  // OpenAPI JSON spec
+  app.get('/api/docs/openapi.json', (c) => {
+    return c.json(openApiDocument)
+  })
+
+  // Scalar API Reference UI
+  app.get(
+    '/api/docs',
+    apiReference({
+      spec: {
+        url: '/api/docs/openapi.json',
+      },
+      theme: 'purple',
+      title: '帧服了短剧平台 API 文档',
+      configuration: {
+        hideModels: false,
+        hideSidebar: false,
+        darkMode: true,
+      },
+    })
+  )
+}
 
 // 404 handler
 app.notFound(notFoundHandler)
 
 // Start server
 const port = env.port
-const server = createServer(app)
+// 使用 serve 而不是 createServer，但保留 server 引用用于 WebSocket
+const server = serve({
+  fetch: app.fetch,
+  port,
+})
 
 // Create WebSocket server (reuse HTTP server)
 const wss = createWebSocketServer(server)
@@ -86,15 +129,24 @@ async function start() {
     console.warn('⚠️  Failed to connect to Redis - some features may be limited')
   }
 
-  // Start listening
-  server.listen(port, () => {
-    console.log('')
-    console.log('✅ Server is ready!')
-    console.log(`   API: http://localhost:${port}${env.apiPrefix}`)
-    console.log(`   WebSocket: ws://localhost:${port}/ws`)
-    console.log(`   Health: http://localhost:${port}/health`)
-    console.log('')
+  // Start task worker
+  startTaskWorker({
+    concurrency: 3,
+    pollInterval: 1000,
+    taskTimeout: 5 * 60 * 1000, // 5 minutes
   })
+  console.log('✅ Task worker started')
+
+  // Server is already listening (serve starts automatically)
+  console.log('')
+  console.log('✅ Server is ready!')
+  console.log(`   API: http://localhost:${port}${env.apiPrefix}`)
+  console.log(`   WebSocket: ws://localhost:${port}/ws`)
+  console.log(`   Health: http://localhost:${port}/health`)
+  if (env.apiDocs.enabled) {
+    console.log(`   API Docs: http://localhost:${port}/api/docs`)
+  }
+  console.log('')
 }
 
 // Graceful shutdown
@@ -117,6 +169,9 @@ async function shutdown() {
 
   // Close Redis connection
   await closeRedisConnection()
+
+  // Stop task worker
+  stopTaskWorker()
 
   console.log('✅ Server shut down complete')
   process.exit(0)

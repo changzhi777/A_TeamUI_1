@@ -1,5 +1,15 @@
+/**
+ * auth-layout
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import React from 'react'
 import { Logo } from '@/assets/logo'
+import { getVersionString, COPYRIGHT } from '@/lib/version'
 
 type AuthLayoutProps = {
   children: React.ReactNode
@@ -14,6 +24,9 @@ export function AuthLayout({ children }: AuthLayoutProps) {
           <h1 className='text-xl font-medium'>帧服了短剧平台</h1>
         </div>
         {children}
+        <div className='mt-6 text-center text-xs text-muted-foreground'>
+          <p>{COPYRIGHT} | {getVersionString()}</p>
+        </div>
       </div>
     </div>
   )

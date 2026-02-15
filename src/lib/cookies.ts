@@ -1,4 +1,13 @@
 /**
+ * cookies
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
+/**
  * Cookie utility functions using manual document.cookie approach
  * Replaces js-cookie dependency for better consistency
  */

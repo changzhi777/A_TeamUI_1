@@ -1,4 +1,13 @@
 /**
+ * index
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
+/**
  * Assets Feature Index
  * 资产管理功能入口
  */

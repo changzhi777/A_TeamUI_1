@@ -1,3 +1,12 @@
+/**
+ * sign-up-form
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import React, { useState } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
@@ -70,16 +79,18 @@ export function SignUpForm({ className }: SignUpFormProps) {
 
     if (result.success && result.user) {
       toast.success('注册成功！欢迎使用帧服了短剧平台')
-      // 自动登录新用户（使用默认 token）
-      login(result.user, {
+      // 自动登录新用户（使用默认 token）- 等待 login 完成
+      await login(result.user, {
         accessToken: `mock_token_${result.user.id}_${Date.now()}`,
         refreshToken: `refresh_token_${result.user.id}_${Date.now()}`,
         expiresAt: Date.now() + 60 * 60 * 1000,
         rememberMe: false,
       })
-      // 重定向到目标页面或项目列表
+      // 重定向到目标页面或项目列表 - 使用 setTimeout 确保状态已更新
       const targetPath = redirectTo || '/projects'
-      navigate({ to: targetPath, replace: true })
+      setTimeout(() => {
+        navigate({ to: targetPath, replace: true })
+      }, 0)
     } else {
       toast.error(result.error || '注册失败，请稍后重试')
     }

@@ -1,4 +1,13 @@
 /**
+ * project-assets-page
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
+/**
  * Project Assets Page
  * 项目资产页面
  */

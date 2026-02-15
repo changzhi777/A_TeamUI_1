@@ -1,3 +1,12 @@
+/**
+ * auth-store
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { getCookie, setCookie, removeCookie } from '@/lib/cookies'
@@ -287,7 +296,7 @@ export const useAuthStore = create<AuthState>()(
       },
 
       // Token 刷新
-      refreshToken: async () => {
+      refreshAccessToken: async () => {
         const { refreshToken: currentRefreshToken } = get()
 
         if (!currentRefreshToken || !user) {

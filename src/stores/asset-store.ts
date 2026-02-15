@@ -1,4 +1,13 @@
 /**
+ * asset-store
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
+/**
  * Asset Management Store
  * 资产管理状态管理
  */
@@ -33,8 +42,25 @@ export interface AssetFilters {
 
 /**
  * 资产视图模式
+ * - grid: 网格视图（多列网格布局）
+ * - card: 卡片列表（多列卡片布局）
+ * - table: 表格视图（数据表形式）
  */
-export type AssetViewMode = 'grid' | 'list'
+export type AssetViewMode = 'grid' | 'card' | 'table'
+
+/**
+ * 旧版视图模式（向后兼容）
+ */
+export type LegacyAssetViewMode = 'grid' | 'list'
+
+/**
+ * 视图模式映射（处理旧版 'list' 到新版 'card' 的转换）
+ */
+export function normalizeViewMode(mode: string): AssetViewMode {
+  if (mode === 'list') return 'card'
+  if (mode === 'grid' || mode === 'card' || mode === 'table') return mode
+  return 'grid' // 默认
+}
 
 /**
  * 资产上传任务
@@ -114,7 +140,8 @@ export const useAssetStore = create<AssetState>()(
 
       setViewMode: (mode) =>
         set((state) => {
-          state.viewMode = mode
+          // 处理旧版 'list' 到新版 'card' 的转换
+          state.viewMode = normalizeViewMode(mode)
         }),
 
       // 选择操作

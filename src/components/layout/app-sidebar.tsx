@@ -1,4 +1,13 @@
-import React from 'react'
+/**
+ * app-sidebar
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
+import React, { useMemo } from 'react'
 import { useLayout } from '@/context/layout-provider'
 import {
   Sidebar,
@@ -13,10 +22,15 @@ import { NavGroup } from './nav-group'
 import { NavUser } from './nav-user'
 import { TeamSwitcher } from './team-switcher'
 import { useAuthStore, type AuthUser } from '@/stores/auth-store'
+import { useDisplayStore } from '@/stores/display-store'
+import { filterSidebarByPermission } from '@/lib/sidebar-filter'
 
 export function AppSidebar() {
   const { collapsible, variant } = useLayout()
   const user = useAuthStore((state) => state.user)
+  const visibleSidebarItems = useDisplayStore(
+    (state) => state.visibleSidebarItems
+  )
 
   // 默认用户（兼容 AuthUser 类型）
   const defaultUser: AuthUser = {
@@ -30,6 +44,16 @@ export function AppSidebar() {
 
   const currentUser: AuthUser = user || defaultUser
 
+  // 根据用户权限和显示设置过滤侧边栏菜单
+  const filteredNavGroups = useMemo(() => {
+    return filterSidebarByPermission(
+      sidebarData.navGroups,
+      currentUser.role,
+      currentUser.permissions,
+      visibleSidebarItems // 传入显示设置
+    )
+  }, [currentUser.role, currentUser.permissions, visibleSidebarItems])
+
   return (
     <Sidebar collapsible={collapsible} variant={variant}>
       <SidebarHeader>
@@ -40,7 +64,7 @@ export function AppSidebar() {
         {/* <AppTitle /> */}
       </SidebarHeader>
       <SidebarContent>
-        {sidebarData.navGroups.map((props) => (
+        {filteredNavGroups.map((props) => (
           <NavGroup key={props.title} {...props} />
         ))}
       </SidebarContent>

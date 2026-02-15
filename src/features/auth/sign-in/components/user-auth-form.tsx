@@ -1,3 +1,12 @@
+/**
+ * user-auth-form
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import React, { useState } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
@@ -52,29 +61,31 @@ export function UserAuthForm({
     },
   })
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
+  async function onSubmit(data: z.infer<typeof formSchema>) {
     setIsLoading(true)
 
     // 使用模拟登录函数
     const result = mockLogin(data.email, data.password, rememberMe)
 
-    sleep(500).then(() => {
-      setIsLoading(false)
+    await sleep(500)
+    setIsLoading(false)
 
-      if (result.success && result.user && result.tokenInfo) {
-        // 登录成功
-        login(result.user, result.tokenInfo)
+    if (result.success && result.user && result.tokenInfo) {
+      // 登录成功 - 等待 login 完成
+      await login(result.user, result.tokenInfo)
 
-        toast.success(`欢迎回来，${result.user.name}！`)
+      toast.success(`欢迎回来，${result.user.name}！`)
 
-        // 重定向到存储的位置或默认到项目列表
-        const targetPath = redirectTo || '/projects'
+      // 重定向到存储的位置或默认到项目列表
+      // 使用 setTimeout 确保状态已完全更新后再导航
+      const targetPath = redirectTo || '/projects'
+      setTimeout(() => {
         navigate({ to: targetPath, replace: true })
-      } else {
-        // 登录失败
-        toast.error(result.error || '登录失败，请检查您的凭据')
-      }
-    })
+      }, 0)
+    } else {
+      // 登录失败
+      toast.error(result.error || '登录失败，请检查您的凭据')
+    }
   }
 
   return (

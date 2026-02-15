@@ -1,4 +1,13 @@
-import { useState, useEffect } from 'react'
+/**
+ * shot-form-dialog
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
+import { useState, useEffect, useMemo } from 'react'
 import React from 'react'
 import { Button } from '@/components/ui/button'
 import {
@@ -19,10 +28,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useStoryboardStore, type ShotSize, type CameraMovement } from '@/stores/storyboard-store'
+import { Separator } from '@/components/ui/separator'
+import { useStoryboardStore, type ShotSize, type CameraMovement, type CustomFieldValue } from '@/stores/storyboard-store'
+import { useCustomFieldStore } from '@/stores/custom-field-store'
 import { toast } from 'sonner'
 import { Upload, X, Image as ImageIcon } from 'lucide-react'
 import { AssetSelector } from '@/features/assets/components/asset-selector'
+import { CustomFieldsForm, mergeCustomFieldValues } from './custom-field-renderer'
 import type { Asset } from '@/lib/types/assets'
 
 interface ShotFormDialogProps {
@@ -35,8 +47,16 @@ interface ShotFormDialogProps {
 export function ShotFormDialog({ open, onOpenChange, projectId, shot }: ShotFormDialogProps) {
   const addShot = useStoryboardStore((state) => state.addShot)
   const updateShot = useStoryboardStore((state) => state.updateShot)
+  const { getMergedFields } = useCustomFieldStore()
+
+  // Get merged custom fields for the current project
+  const customFields = useMemo(() => {
+    return projectId ? getMergedFields(projectId) : []
+  }, [projectId, getMergedFields])
 
   const [formData, setFormData] = useState({
+    seasonNumber: '' as string | number,
+    episodeNumber: '' as string | number,
     sceneNumber: '',
     shotSize: 'medium' as ShotSize,
     cameraMovement: 'static' as CameraMovement,
@@ -47,12 +67,17 @@ export function ShotFormDialog({ open, onOpenChange, projectId, shot }: ShotForm
     image: '',
   })
 
+  // Custom field values state
+  const [customFieldValues, setCustomFieldValues] = useState<Record<string, CustomFieldValue>>({})
+
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [showAssetSelector, setShowAssetSelector] = useState(false)
 
   useEffect(() => {
     if (shot) {
       setFormData({
+        seasonNumber: shot.seasonNumber ?? '',
+        episodeNumber: shot.episodeNumber ?? '',
         sceneNumber: shot.sceneNumber || '',
         shotSize: shot.shotSize,
         cameraMovement: shot.cameraMovement,
@@ -63,8 +88,12 @@ export function ShotFormDialog({ open, onOpenChange, projectId, shot }: ShotForm
         image: shot.image || '',
       })
       setImagePreview(shot.image || null)
+      // Set custom field values from shot
+      setCustomFieldValues(mergeCustomFieldValues(shot.customFields, customFields))
     } else {
       setFormData({
+        seasonNumber: '',
+        episodeNumber: '',
         sceneNumber: '',
         shotSize: 'medium',
         cameraMovement: 'static',
@@ -75,8 +104,10 @@ export function ShotFormDialog({ open, onOpenChange, projectId, shot }: ShotForm
         image: '',
       })
       setImagePreview(null)
+      // Reset custom field values to defaults
+      setCustomFieldValues(mergeCustomFieldValues(undefined, customFields))
     }
-  }, [shot, open])
+  }, [shot, open, customFields])
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -126,26 +157,41 @@ export function ShotFormDialog({ open, onOpenChange, projectId, shot }: ShotForm
       return
     }
 
+    const shotData = {
+      projectId,
+      shotNumber: shot?.shotNumber || 0, // Will be assigned by store
+      seasonNumber: formData.seasonNumber ? Number(formData.seasonNumber) : undefined,
+      episodeNumber: formData.episodeNumber ? Number(formData.episodeNumber) : undefined,
+      sceneNumber: formData.sceneNumber,
+      shotSize: formData.shotSize,
+      cameraMovement: formData.cameraMovement,
+      duration: formData.duration,
+      description: formData.description,
+      dialogue: formData.dialogue,
+      sound: formData.sound,
+      image: formData.image,
+      // Include custom fields if there are any
+      ...(customFields.length > 0 && { customFields: customFieldValues }),
+      createdBy: 'current-user',
+    }
+
     if (shot) {
-      updateShot(shot.id, formData)
+      updateShot(shot.id, shotData)
       toast.success('镜头已更新')
     } else {
-      addShot({
-        projectId,
-        sceneNumber: formData.sceneNumber,
-        shotSize: formData.shotSize,
-        cameraMovement: formData.cameraMovement,
-        duration: formData.duration,
-        description: formData.description,
-        dialogue: formData.dialogue,
-        sound: formData.sound,
-        image: formData.image,
-        createdBy: 'current-user',
-      })
+      addShot(shotData)
       toast.success('镜头已添加')
     }
 
     onOpenChange(false)
+  }
+
+  // Handle custom field value changes
+  const handleCustomFieldChange = (fieldId: string, value: CustomFieldValue) => {
+    setCustomFieldValues((prev) => ({
+      ...prev,
+      [fieldId]: value,
+    }))
   }
 
   return (
@@ -160,6 +206,32 @@ export function ShotFormDialog({ open, onOpenChange, projectId, shot }: ShotForm
           </DialogHeader>
 
           <div className="grid gap-4 py-4">
+            {/* 季数和集数 */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="seasonNumber">季数</Label>
+                <Input
+                  id="seasonNumber"
+                  type="number"
+                  min="1"
+                  placeholder="如: 1"
+                  value={formData.seasonNumber}
+                  onChange={(e) => setFormData({ ...formData, seasonNumber: e.target.value })}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="episodeNumber">集数</Label>
+                <Input
+                  id="episodeNumber"
+                  type="number"
+                  min="1"
+                  placeholder="如: 1"
+                  value={formData.episodeNumber}
+                  onChange={(e) => setFormData({ ...formData, episodeNumber: e.target.value })}
+                />
+              </div>
+            </div>
+
             {/* 场次 */}
             <div className="grid gap-2">
               <Label htmlFor="sceneNumber">场次</Label>
@@ -267,6 +339,24 @@ export function ShotFormDialog({ open, onOpenChange, projectId, shot }: ShotForm
                 onChange={(e) => setFormData({ ...formData, sound: e.target.value })}
               />
             </div>
+
+            {/* 自定义字段 */}
+            {customFields.length > 0 && (
+              <>
+                <Separator className="my-4" />
+                <div className="space-y-1">
+                  <h4 className="text-sm font-medium">自定义字段</h4>
+                  <p className="text-xs text-muted-foreground">
+                    项目特定的扩展信息
+                  </p>
+                </div>
+                <CustomFieldsForm
+                  fields={customFields}
+                  values={customFieldValues}
+                  onChange={handleCustomFieldChange}
+                />
+              </>
+            )}
 
             {/* 配图 */}
             <div className="grid gap-2">

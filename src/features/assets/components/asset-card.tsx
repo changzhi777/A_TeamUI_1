@@ -1,4 +1,13 @@
 /**
+ * asset-card
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
+/**
  * Asset Card Component
  * 资产卡片组件
  */
@@ -44,6 +53,8 @@ import {
   Copy,
   Eye,
   Tag,
+  User,
+  UserCircle,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { useAssetMutations } from '@/stores/asset-store'
@@ -85,9 +96,22 @@ export function AssetCard({ asset, onSelect, onPreview, onUpdate }: AssetCardPro
         return <FileText className="h-4 w-4" />
       case 'aiGenerated':
         return <Sparkles className="h-4 w-4" />
+      case 'character':
+        return <User className="h-4 w-4" />
       default:
         return <FileText className="h-4 w-4" />
     }
+  }
+
+  // 获取角色缩略图
+  const getCharacterThumbnail = () => {
+    if (asset.type === 'character' && asset.characterData) {
+      return asset.characterData.views.front?.url ||
+        asset.characterData.views.threeQuarter?.url ||
+        asset.characterData.views.side?.url ||
+        asset.characterData.views.back?.url
+    }
+    return null
   }
 
   // 处理选择
@@ -214,9 +238,23 @@ export function AssetCard({ asset, onSelect, onPreview, onUpdate }: AssetCardPro
               className="w-full h-full object-cover transition-transform group-hover:scale-105"
               loading="lazy"
             />
+          ) : asset.type === 'character' && getCharacterThumbnail() ? (
+            <img
+              src={getCharacterThumbnail()!}
+              alt={asset.name}
+              className="w-full h-full object-cover transition-transform group-hover:scale-105"
+              loading="lazy"
+            />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-muted-foreground">
               {getTypeIcon()}
+            </div>
+          )}
+
+          {/* 角色编号标识 */}
+          {asset.type === 'character' && asset.characterData?.code && (
+            <div className="absolute top-2 left-10 bg-orange-500/90 text-white text-xs px-2 py-0.5 rounded-full font-mono">
+              {asset.characterData.code}
             </div>
           )}
 
@@ -251,6 +289,14 @@ export function AssetCard({ asset, onSelect, onPreview, onUpdate }: AssetCardPro
               <span>•</span>
               <span>{formatAssetFileSize(asset.fileSize)}</span>
             </div>
+
+            {/* 上传者信息 */}
+            {asset.uploadedByName && (
+              <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
+                <UserCircle className="h-3 w-3" />
+                <span className="truncate">{asset.uploadedByName}</span>
+              </div>
+            )}
 
             {/* 标签 */}
             {asset.tags.length > 0 && (

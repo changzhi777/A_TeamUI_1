@@ -1,4 +1,13 @@
 /**
+ * assets
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
+/**
  * Asset API Client
  * 资产管理 API 客户端
  *
@@ -84,6 +93,7 @@ export async function uploadAsset(data: {
   tags?: string[]
   description?: string
   metadata?: Record<string, any>
+  characterData?: any // 角色资产数据
 }): Promise<Asset> {
   if (USE_MOCK) {
     return mockService.uploadAsset(data)

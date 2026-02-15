@@ -1,3 +1,12 @@
+/**
+ * api
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 // API Response types
 export interface ApiResponse<T = unknown> {
   success: boolean
@@ -104,10 +113,33 @@ export type CameraMovement =
   | 'tracking'
   | 'arc'
 
+// Custom field value types
+export type CustomFieldValue = string | number | boolean | string[] | null
+
+// Custom field configuration types
+export type CustomFieldType = 'text' | 'textarea' | 'number' | 'select' | 'multiselect' | 'date' | 'checkbox'
+
+export interface CustomFieldConfig {
+  id: string
+  name: string
+  type: CustomFieldType
+  required: boolean
+  defaultValue?: CustomFieldValue
+  options?: string[] // For select/multiselect types
+  projectId?: string // undefined means global field
+  order: number
+  visible: boolean
+  createdAt: string
+  updatedAt: string
+}
+
 export interface StoryboardShot {
   id: string
   projectId: string
   shotNumber: number
+  // New: Season and Episode fields
+  seasonNumber?: number
+  episodeNumber?: number
   sceneNumber: string
   shotSize: ShotSize
   cameraMovement: CameraMovement
@@ -118,6 +150,8 @@ export interface StoryboardShot {
   imageUrl: string
   imageThumbnailUrl: string
   aiGenerated: boolean
+  // New: Custom fields storage
+  customFields?: Record<string, CustomFieldValue>
   createdBy: string
   createdAt: string
   updatedAt: string

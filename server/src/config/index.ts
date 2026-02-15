@@ -1,3 +1,12 @@
+/**
+ * index
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import { config } from 'dotenv'
 
 // Load environment variables
@@ -41,6 +50,12 @@ export const env = {
   // CORS
   cors: {
     origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  },
+
+  // API Docs
+  apiDocs: {
+    enabled: process.env.ENABLE_API_DOCS !== 'false',
+    requiresAuth: process.env.API_DOCS_REQUIRES_AUTH === 'true',
   },
 } as const
 

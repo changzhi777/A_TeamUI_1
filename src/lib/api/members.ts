@@ -1,3 +1,12 @@
+/**
+ * members
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import { api } from './client'
 
 export interface Member {
@@ -34,8 +43,9 @@ export interface MemberListParams {
 }
 
 export interface MemberListResponse {
-  members: Member[]
-  pagination: {
+  success: boolean
+  data: Member[]
+  meta: {
     page: number
     pageSize: number
     total: number
@@ -79,18 +89,7 @@ export async function getMembers(params?: MemberListParams): Promise<MemberListR
   const queryString = queryParams.toString()
   const url = `/members${queryString ? `?${queryString}` : ''}`
 
-  const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}${url}`, {
-    headers: {
-      'Authorization': `Bearer ${api.getAccessToken()}`,
-    },
-  })
-
-  if (!response.ok) {
-    const error = await response.json()
-    throw new Error(error.error || 'Failed to fetch members')
-  }
-
-  return await response.json()
+  return api.get<MemberListResponse>(url)
 }
 
 /**

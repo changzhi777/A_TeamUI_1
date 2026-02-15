@@ -1,5 +1,41 @@
+/**
+ * storyboard
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import { api } from './client'
-import type { StoryboardShot, PaginationParams, SortParams } from '../types/api'
+import type { StoryboardShot, PaginationParams, SortParams, CustomFieldValue } from '../types/api'
+
+// Shot creation/update data types
+export interface ShotCreateData {
+  sceneNumber?: string
+  seasonNumber?: number
+  episodeNumber?: number
+  shotSize: string
+  cameraMovement: string
+  duration: number
+  description?: string
+  dialogue?: string
+  sound?: string
+  customFields?: Record<string, CustomFieldValue>
+}
+
+export interface ShotUpdateData {
+  sceneNumber?: string
+  seasonNumber?: number
+  episodeNumber?: number
+  shotSize?: string
+  cameraMovement?: string
+  duration?: number
+  description?: string
+  dialogue?: string
+  sound?: string
+  customFields?: Record<string, CustomFieldValue>
+}
 
 // Storyboard API endpoints
 export const storyboardApi = {
@@ -8,7 +44,7 @@ export const storyboardApi = {
    */
   async getShots(
     projectId: string,
-    params?: PaginationParams & SortParams & { sceneNumber?: string }
+    params?: PaginationParams & SortParams & { sceneNumber?: string; seasonNumber?: number; episodeNumber?: number }
   ): Promise<{ shots: StoryboardShot[]; total: number }> {
     return api.get<{ shots: StoryboardShot[]; total: number }>(
       `/projects/${projectId}/shots`,
@@ -28,15 +64,7 @@ export const storyboardApi = {
    */
   async createShot(
     projectId: string,
-    data: {
-      sceneNumber?: string
-      shotSize: string
-      cameraMovement: string
-      duration: number
-      description?: string
-      dialogue?: string
-      sound?: string
-    }
+    data: ShotCreateData
   ): Promise<StoryboardShot> {
     return api.post<StoryboardShot>(`/projects/${projectId}/shots`, data)
   },
@@ -46,15 +74,7 @@ export const storyboardApi = {
    */
   async updateShot(
     shotId: string,
-    data: {
-      sceneNumber?: string
-      shotSize?: string
-      cameraMovement?: string
-      duration?: number
-      description?: string
-      dialogue?: string
-      sound?: string
-    }
+    data: ShotUpdateData
   ): Promise<StoryboardShot> {
     return api.put<StoryboardShot>(`/shots/${shotId}`, data)
   },

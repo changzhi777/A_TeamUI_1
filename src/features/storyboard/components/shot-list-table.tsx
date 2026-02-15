@@ -1,3 +1,12 @@
+/**
+ * shot-list-table
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import { useState, useMemo } from 'react'
 import {
   type ColumnDef,
@@ -38,6 +47,9 @@ import {
 } from '@/components/data-table'
 import { type StoryboardShot, useStoryboardStore } from '@/stores/storyboard-store'
 import { type Project } from '@/stores/project-store'
+import { useCustomFieldStore } from '@/stores/custom-field-store'
+import { CustomFieldValueDisplay } from './custom-field-renderer'
+import type { CustomFieldConfig } from '@/lib/types/api'
 
 interface ShotListTableProps {
   shots: StoryboardShot[]
@@ -86,13 +98,34 @@ function getProjectName(projectId: string, projects: Project[]) {
   return project?.name || '未知项目'
 }
 
+// 截断文本到指定字符数（中文字符）
+function truncateText(text: string, maxLength: number): string {
+  if (!text) return ''
+  if (text.length <= maxLength) return text
+  return text.slice(0, maxLength) + '...'
+}
+
 export function ShotListTable({ shots, projects, onBatchDelete, onEdit, onDelete }: ShotListTableProps) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  // 季数、集数和项目默认隐藏
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    seasonNumber: false,
+    episodeNumber: false,
+    projectId: false,
+  })
   const [rowSelection, setRowSelection] = useState({})
 
   const { toggleShotSelection, deselectAllShots, selectedShotIds } = useStoryboardStore()
+  const { getVisibleFields } = useCustomFieldStore()
+
+  // Get visible custom fields (merged global + project-specific)
+  // For simplicity, we use the first shot's projectId to get fields
+  // In a real scenario with mixed projects, you might want to handle this differently
+  const projectId = shots.length > 0 ? shots[0].projectId : undefined
+  const customFields = useMemo(() => {
+    return projectId ? getVisibleFields(projectId) : []
+  }, [projectId, getVisibleFields])
 
   // 景别选项
   const shotSizeOptions = [
@@ -118,14 +151,72 @@ export function ShotListTable({ shots, projects, onBatchDelete, onEdit, onDelete
     { label: '弧形', value: 'arc' },
   ]
 
-  const columns: ColumnDef<StoryboardShot>[] = [
+  // 动态生成季数选项（基于当前数据）
+  const seasonOptions = useMemo(() => {
+    const seasons = new Set<number>()
+    shots.forEach((shot) => {
+      if (shot.seasonNumber !== undefined && shot.seasonNumber !== null) {
+        seasons.add(shot.seasonNumber)
+      }
+    })
+    return Array.from(seasons)
+      .sort((a, b) => a - b)
+      .map((s) => ({ label: `第${s}季`, value: String(s) }))
+  }, [shots])
+
+  // 动态生成集数选项（基于当前数据）
+  const episodeOptions = useMemo(() => {
+    const episodes = new Set<number>()
+    shots.forEach((shot) => {
+      if (shot.episodeNumber !== undefined && shot.episodeNumber !== null) {
+        episodes.add(shot.episodeNumber)
+      }
+    })
+    return Array.from(episodes)
+      .sort((a, b) => a - b)
+      .map((e) => ({ label: `第${e}集`, value: String(e) }))
+  }, [shots])
+
+  // 生成自定义字段的筛选选项（仅 select 类型）
+  const customFieldFilters = useMemo(() => {
+    return customFields
+      .filter((field) => field.type === 'select' || field.type === 'multiselect')
+      .map((field) => ({
+        columnId: `custom_${field.id}`,
+        title: field.name,
+        options: field.options?.map((opt, idx) => ({ label: opt, value: String(idx) })) || [],
+      }))
+  }, [customFields])
+
+  // Generate custom field columns
+  const customFieldColumns: ColumnDef<StoryboardShot>[] = useMemo(() => {
+    return customFields.map((field) => ({
+      id: `custom_${field.id}`,
+      accessorFn: (row: StoryboardShot) => row.customFields?.[field.id] ?? null,
+      header: field.name,
+      cell: ({ row }) => {
+        const value = row.original.customFields?.[field.id] ?? null
+        return (
+          <div className="max-w-[150px]">
+            <CustomFieldValueDisplay field={field} value={value} />
+          </div>
+        )
+      },
+    }))
+  }, [customFields])
+
+  // Base columns
+  const baseColumns: ColumnDef<StoryboardShot>[] = [
     {
       id: 'select',
       header: ({ table }) => (
         <Checkbox
           checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
+            table.getIsAllPageRowsSelected()
+              ? true
+              : table.getIsSomePageRowsSelected()
+                ? 'indeterminate'
+                : false
           }
           onCheckedChange={(value) => {
             table.toggleAllPageRowsSelected(!!value)
@@ -160,6 +251,22 @@ export function ShotListTable({ shots, projects, onBatchDelete, onEdit, onDelete
       cell: ({ row }) => <div className="w-[80px]">{row.getValue('shotNumber')}</div>,
     },
     {
+      accessorKey: 'seasonNumber',
+      header: '季数',
+      cell: ({ row }) => {
+        const value = row.getValue('seasonNumber') as number | undefined
+        return <div className="w-[60px]">{value ?? '-'}</div>
+      },
+    },
+    {
+      accessorKey: 'episodeNumber',
+      header: '集数',
+      cell: ({ row }) => {
+        const value = row.getValue('episodeNumber') as number | undefined
+        return <div className="w-[60px]">{value ?? '-'}</div>
+      },
+    },
+    {
       accessorKey: 'sceneNumber',
       header: '场次',
       cell: ({ row }) => <div className="w-[80px]">{row.getValue('sceneNumber')}</div>,
@@ -186,11 +293,14 @@ export function ShotListTable({ shots, projects, onBatchDelete, onEdit, onDelete
     {
       accessorKey: 'description',
       header: '画面描述',
-      cell: ({ row }) => (
-        <div className="max-w-[300px] truncate" title={row.getValue('description')}>
-          {row.getValue('description')}
-        </div>
-      ),
+      cell: ({ row }) => {
+        const description = row.getValue('description') as string
+        return (
+          <div className="whitespace-nowrap" title={description}>
+            {truncateText(description, 8)}
+          </div>
+        )
+      },
     },
     {
       accessorKey: 'dialogue',
@@ -204,11 +314,14 @@ export function ShotListTable({ shots, projects, onBatchDelete, onEdit, onDelete
     {
       accessorKey: 'sound',
       header: '音效说明',
-      cell: ({ row }) => (
-        <div className="max-w-[150px] truncate" title={row.getValue('sound')}>
-          {row.getValue('sound') || '-'}
-        </div>
-      ),
+      cell: ({ row }) => {
+        const sound = row.getValue('sound') as string
+        return (
+          <div className="whitespace-nowrap" title={sound || ''}>
+            {sound ? truncateText(sound, 5) : '-'}
+          </div>
+        )
+      },
     },
     {
       accessorKey: 'projectId',
@@ -277,6 +390,14 @@ export function ShotListTable({ shots, projects, onBatchDelete, onEdit, onDelete
     },
   ]
 
+  // Merge base columns with custom field columns (before actions column)
+  const columns: ColumnDef<StoryboardShot>[] = useMemo(() => {
+    const actionsIndex = baseColumns.findIndex((col) => col.id === 'actions')
+    const colsBeforeActions = baseColumns.slice(0, actionsIndex)
+    const colsAfterActions = baseColumns.slice(actionsIndex)
+    return [...colsBeforeActions, ...customFieldColumns, ...colsAfterActions]
+  }, [customFieldColumns])
+
   const table = useReactTable({
     data: shots,
     columns,
@@ -304,6 +425,12 @@ export function ShotListTable({ shots, projects, onBatchDelete, onEdit, onDelete
         searchPlaceholder="搜索场次、画面描述、对白..."
         searchKey="description"
         filters={[
+          ...(seasonOptions.length > 0
+            ? [{ columnId: 'seasonNumber' as const, title: '季数', options: seasonOptions }]
+            : []),
+          ...(episodeOptions.length > 0
+            ? [{ columnId: 'episodeNumber' as const, title: '集数', options: episodeOptions }]
+            : []),
           {
             columnId: 'shotSize',
             title: '景别',
@@ -314,6 +441,7 @@ export function ShotListTable({ shots, projects, onBatchDelete, onEdit, onDelete
             title: '运镜方式',
             options: movementOptions,
           },
+          ...customFieldFilters,
         ]}
       />
 
@@ -369,7 +497,7 @@ export function ShotListTable({ shots, projects, onBatchDelete, onEdit, onDelete
       {/* 表格 */}
       <div className="rounded-md border overflow-x-auto">
         <div className="min-w-[800px]">
-        <Table>
+        <Table className="compact-table [&_td]:py-1.5 [&_td]:px-2 [&_th]:py-2 [&_th]:px-2">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

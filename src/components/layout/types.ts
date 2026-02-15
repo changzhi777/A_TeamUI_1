@@ -1,5 +1,15 @@
+/**
+ * types
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import React from 'react'
 import { type LinkProps } from '@tanstack/react-router'
+import type { UserRole, Permission } from '@/stores/auth-store'
 
 type User = {
   name: string
@@ -13,10 +23,20 @@ type Team = {
   plan: string
 }
 
+/** 菜单项权限配置 */
+type MenuItemPermission = {
+  /** 允许访问的角色列表 */
+  roles?: UserRole[]
+  /** 需要的权限列表 */
+  permissions?: Permission[]
+}
+
 type BaseNavItem = {
   title: string
   badge?: string
   icon?: React.ElementType
+  /** 权限配置 */
+  permission?: MenuItemPermission
 }
 
 type NavLink = BaseNavItem & {
@@ -46,4 +66,4 @@ type SidebarData = {
   navGroups: NavGroup[]
 }
 
-export type { SidebarData, SidebarUser, NavGroup, NavItem, NavCollapsible, NavLink }
+export type { SidebarData, SidebarUser, NavGroup, NavItem, NavCollapsible, NavLink, MenuItemPermission }

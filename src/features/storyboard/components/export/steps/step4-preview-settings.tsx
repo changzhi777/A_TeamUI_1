@@ -1,3 +1,12 @@
+/**
+ * step4-preview-settings
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -149,7 +158,7 @@ export function Step4_PreviewSettings({
               <Checkbox
                 id="includeDescription"
                 checked={config.includeDescription}
-                onCheckedChange={(checked) => onConfigChange({ includeDescription: checked })}
+                onCheckedChange={(checked) => onConfigChange({ includeDescription: !!checked })}
               />
               <Label htmlFor="includeDescription" className="text-sm">
                 包含向导说明
@@ -160,7 +169,7 @@ export function Step4_PreviewSettings({
                 <Checkbox
                   id="includeSampleData"
                   checked={config.includeSampleData}
-                  onCheckedChange={(checked) => onConfigChange({ includeSampleData: checked })}
+                  onCheckedChange={(checked) => onConfigChange({ includeSampleData: !!checked })}
                 />
                 <Label htmlFor="includeSampleData" className="text-sm">
                   包含示例数据

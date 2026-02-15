@@ -1,4 +1,13 @@
 /**
+ * asset-selector
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
+/**
  * Asset Selector Component
  * 资产选择器组件 - 用于在其他功能中选择资产
  */

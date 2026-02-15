@@ -17,6 +17,44 @@
 - **数据表格**: TanStack Table
 - **国际化**: 自定义 i18n 系统
 - **导出**: jsPDF、docx
+- **测试**: Vitest + Playwright
+
+## 版权信息
+
+```
+@author 外星动物（常智）IoTchange
+@email 14455975@qq.com
+@copyright ©2026 IoTchange
+```
+
+所有源代码文件应包含以上版权头信息。
+
+## 版本管理
+
+### 版本号格式
+
+采用语义化版本号：`V主版本.次版本.修订号`
+
+- **当前版本**: V0.1.0
+- **版本存储**: package.json 的 version 字段
+
+### 版本递增规则
+
+| 变更类型 | 版本递增 | 示例 |
+|----------|----------|------|
+| Bug 修复 | 修订号 | V0.1.0 → V0.1.1 |
+| 功能新增 | 次版本号 | V0.1.0 → V0.2.0 |
+| 重大变更 | 主版本号 | V0.1.0 → V1.0.0 |
+
+### 版本信息模块
+
+版本信息通过 `src/lib/version.ts` 模块访问：
+
+```typescript
+import { getVersionString, COPYRIGHT, AUTHOR } from '@/lib/version'
+
+console.log(getVersionString()) // "V0.1.0"
+```
 
 ## 项目约定
 
@@ -44,9 +82,38 @@
 
 ### Git 工作流
 
-- **分支策略**: 使用功能分支进行开发，main 分支保持稳定
-- **提交规范**: 使用 Conventional Commits 格式
-- **代码审查**: 所有合并需要通过 Pull Request 进行
+详细的 Git 工作流规范请参考 [`docs/git-workflow.md`](../docs/git-workflow.md)。
+
+#### 分支策略
+
+| 分支 | 用途 | 保护级别 |
+|------|------|----------|
+| `main` | 生产分支，只接受 release 合并 | 高 - 需要 PR 审查 |
+| `develop` | 开发分支，接受 feature 合并 | 中 - 需要 PR 审查 |
+
+#### 临时分支
+
+- `feature/*` - 新功能开发
+- `bugfix/*` - Bug 修复
+- `refactor/*` - 代码重构
+- `release/*` - 版本发布
+- `hotfix/*` - 紧急修复
+
+#### 提交规范
+
+使用 Conventional Commits 格式：`<type>(<scope>): <subject>`
+
+常用类型：
+- `feat` - 新功能
+- `fix` - Bug 修复
+- `docs` - 文档更新
+- `refactor` - 代码重构
+- `test` - 测试相关
+- `chore` - 构建/工具
+
+#### 版本标签
+
+使用 `vX.Y.Z` 格式的 Git 标签管理版本发布。
 
 ## 领域知识
 

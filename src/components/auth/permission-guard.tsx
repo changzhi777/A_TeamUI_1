@@ -1,3 +1,12 @@
+/**
+ * permission-guard
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import React from 'react'
 import { useAuthStore } from '@/stores/auth-store'
 import { type UserRole, type Permission } from '@/stores/auth-store'

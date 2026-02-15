@@ -1,3 +1,12 @@
+/**
+ * redis
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import Redis from 'ioredis'
 import { env } from './index'
 
@@ -158,6 +167,29 @@ export async function deleteSession(userId: string, sessionId: string): Promise<
 export async function getUserSessions(userId: string): Promise<string[]> {
   return redis.smembers(redisKeys.sessions(userId))
 }
+
+// ==================== Task Queue Keys ====================
+
+// Task queue keys (separate object for task queue functionality)
+export const taskQueueKeys = {
+  // Task queues by priority: task:queue:{priority} (List)
+  queue: (priority: 'high' | 'normal' | 'low') => `task:queue:${priority}`,
+
+  // Task detail: task:{taskId} (Hash)
+  task: (taskId: string) => `task:${taskId}`,
+
+  // Running tasks: task:running (Set)
+  running: () => 'task:running',
+
+  // User tasks: tasks:user:{userId} (List)
+  userTasks: (userId: string) => `tasks:user:${userId}`,
+
+  // Task events: task:events:{taskId} (List)
+  taskEvents: (taskId: string) => `task:events:${taskId}`,
+}
+
+// Task queue TTL (in seconds)
+export const TASK_TTL = 60 * 60 * 24 * 7 // 7 days
 
 // Lock helpers
 export async function acquireLock(

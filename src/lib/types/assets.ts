@@ -1,4 +1,13 @@
 /**
+ * assets
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
+/**
  * Asset Management Types
  * 资产管理相关类型定义
  */
@@ -6,7 +15,7 @@
 /**
  * 资产类型
  */
-export type AssetType = 'image' | 'audio' | 'video' | 'script' | 'aiGenerated'
+export type AssetType = 'image' | 'audio' | 'video' | 'script' | 'aiGenerated' | 'character'
 
 /**
  * 资产来源
@@ -32,6 +41,7 @@ export const ASSET_MIME_TYPES: Record<AssetType, string[]> = {
   video: ['video/mp4', 'video/webm', 'video/quicktime'],
   script: ['text/plain', 'text/markdown', 'application/pdf'],
   aiGenerated: ['image/jpeg', 'image/png', 'image/webp', 'video/mp4', 'video/webm', 'text/plain'],
+  character: ['application/json'], // 角色资产使用 JSON 存储
 }
 
 /**
@@ -43,6 +53,7 @@ export const ASSET_EXTENSIONS: Record<AssetType, string[]> = {
   video: ['.mp4', '.webm', '.mov'],
   script: ['.txt', '.md', '.pdf'],
   aiGenerated: ['.jpg', '.jpeg', '.png', '.webp', '.mp4', '.webm', '.txt'],
+  character: ['.json'], // 角色资产
 }
 
 /**
@@ -54,6 +65,38 @@ export const ASSET_SIZE_LIMITS: Record<AssetType, number> = {
   video: 2 * 1024 * 1024 * 1024, // 2GB
   script: 10 * 1024 * 1024, // 10MB
   aiGenerated: 50 * 1024 * 1024, // 50MB
+  character: 10 * 1024 * 1024, // 10MB (角色数据)
+}
+
+/**
+ * 角色资产数据（存储在 characterData 字段中）
+ */
+export interface CharacterAssetData {
+  code: string
+  description: string
+  personality: string
+  attributes: Record<string, string | undefined>
+  basePrompt: string
+  views: {
+    front?: { url: string; prompt: string; generatedAt: string }
+    side?: { url: string; prompt: string; generatedAt: string }
+    back?: { url: string; prompt: string; generatedAt: string }
+    threeQuarter?: { url: string; prompt: string; generatedAt: string }
+  }
+  costumes: Array<{
+    id: string
+    name: string
+    description: string
+    imageUrl: string
+    prompt: string
+    generatedAt: string
+  }>
+  voice?: {
+    style: string
+    sampleUrl?: string
+    sampleText?: string
+  }
+  characterId: string // 关联的原角色ID
 }
 
 /**
@@ -85,6 +128,9 @@ export interface Asset {
   aiGenerated?: boolean
   aiModel?: string
   aiPrompt?: string
+
+  // 角色资产数据（type 为 character 时使用）
+  characterData?: CharacterAssetData
 
   // 用户信息
   uploadedBy: string
@@ -249,6 +295,7 @@ export function getAssetTypeName(type: AssetType): string {
     video: '视频',
     script: '剧本',
     aiGenerated: 'AI生成',
+    character: '角色人物',
   }
   return names[type]
 }

@@ -1,4 +1,13 @@
-import type { StoryboardShot, ShotSize, CameraMovement } from '@/stores'
+/**
+ * template
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
+import type { StoryboardShot, ShotSize, CameraMovement, CustomFieldValue } from '@/stores'
 
 
 // 读取文件为文本
@@ -15,6 +24,8 @@ function readFileAsText(file: File): Promise<string> {
 
 export interface ParsedShot {
   shotNumber: number
+  seasonNumber?: number
+  episodeNumber?: number
   sceneNumber: string
   shotSize: string
   cameraMovement: string
@@ -22,6 +33,7 @@ export interface ParsedShot {
   description?: string
   dialogue?: string
   sound?: string
+  customFields?: Record<string, CustomFieldValue>
 }
 
 export interface ImportResult {
@@ -31,11 +43,16 @@ export interface ImportResult {
   warnings: string[]
   rowCount: number
   encoding: string
+  // Raw data with original column names for field mapping step
+  rawColumns?: string[]
+  rawData?: Record<string, string>[]
 }
 
 // 列名映射
 const FIELD_MAPPING: Record<string, string> = {
   '镜头编号': 'shotNumber',
+  '季数': 'seasonNumber',
+  '集数': 'episodeNumber',
   '场次': 'sceneNumber',
   '景别': 'shotSize',
   '运镜方式': 'cameraMovement',
@@ -47,6 +64,8 @@ const FIELD_MAPPING: Record<string, string> = {
   '音效/配乐': 'sound',
   // 英文字段名
   'shot number': 'shotNumber',
+  'season': 'seasonNumber',
+  'episode': 'episodeNumber',
   'scene': 'sceneNumber',
   'shot size': 'shotSize',
   'camera movement': 'cameraMovement',
@@ -99,8 +118,10 @@ export async function parseCSVFile(file: File): Promise<ImportResult> {
       return result
     }
 
-    // 解析列标题
+    // 解析列标题 - 保存原始列名
     const headers = parseCSVLine(lines[0])
+    result.rawColumns = headers
+
     const columnMapping = mapColumns(headers)
 
     if (columnMapping.shotNumber === null || columnMapping.sceneNumber === null) {
@@ -110,10 +131,19 @@ export async function parseCSVFile(file: File): Promise<ImportResult> {
 
     // 解析数据行
     const data: ParsedShot[] = []
+    const rawData: Record<string, string>[] = []
+
     for (let i = 1; i < lines.length; i++) {
       try {
         const values = parseCSVLine(lines[i])
         if (values.length === 0) continue
+
+        // 保存原始行数据
+        const rawRow: Record<string, string> = {}
+        headers.forEach((header, index) => {
+          rawRow[header] = values[index] || ''
+        })
+        rawData.push(rawRow)
 
         const shot = parseShotRow(values, columnMapping, i + 1)
         if (shot) {
@@ -125,6 +155,7 @@ export async function parseCSVFile(file: File): Promise<ImportResult> {
     }
 
     result.data = data
+    result.rawData = rawData
     result.rowCount = data.length
     result.success = true
 
@@ -173,15 +204,17 @@ function parseCSVLine(line: string): string[] {
 function mapColumns(headers: string[]): Record<string, number | null> {
   const mapping: Record<string, number | null> = {
     shotNumber: null,
+    seasonNumber: null,
+    episodeNumber: null,
     sceneNumber: null,
     shotSize: null,
     cameraMovement: null,
     duration: null,
     description: null,
     dialogue: null,
-    sound: null
+    sound: null,
   }
-  
+
   headers.forEach((header, index) => {
     const trimmedHeader = header.trim()
     // 首先尝试直接匹配（包括中文）
@@ -214,6 +247,12 @@ function parseShotRow(
     switch (field) {
       case 'shotNumber':
         shot.shotNumber = parseInt(cleanValue) || rowNumber
+        break
+      case 'seasonNumber':
+        shot.seasonNumber = cleanValue ? parseInt(cleanValue) : undefined
+        break
+      case 'episodeNumber':
+        shot.episodeNumber = cleanValue ? parseInt(cleanValue) : undefined
         break
       case 'sceneNumber':
         shot.sceneNumber = cleanValue
@@ -295,6 +334,13 @@ export async function parseJSONTemplate(file: File): Promise<ImportResult> {
     result.data = data.shots
     result.rowCount = data.shots.length
     result.success = true
+
+    // For JSON templates, extract columns from the first shot
+    if (data.shots.length > 0) {
+      const firstShot = data.shots[0]
+      result.rawColumns = Object.keys(firstShot)
+      result.rawData = data.shots
+    }
 
     return result
   } catch (error) {
@@ -399,6 +445,8 @@ export function convertToStoryboardShot(
     id: `shot-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
     projectId,
     shotNumber: shotNumber || parsed.shotNumber,
+    seasonNumber: parsed.seasonNumber,
+    episodeNumber: parsed.episodeNumber,
     sceneNumber: parsed.sceneNumber,
     shotSize: validateShotSize(parsed.shotSize),
     cameraMovement: validateCameraMovement(parsed.cameraMovement),
@@ -406,6 +454,7 @@ export function convertToStoryboardShot(
     description: parsed.description || '',
     dialogue: parsed.dialogue || '',
     sound: parsed.sound || '',
+    customFields: parsed.customFields,
     createdAt: now,
     updatedAt: now,
     createdBy: 'import',

@@ -1,4 +1,13 @@
 /**
+ * asset-library-page
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
+/**
  * Asset Library Page
  * 全局资产库页面
  */
@@ -16,11 +25,14 @@ import {
 import { AssetFilters } from '../components/asset-filters'
 import { AssetGrid } from '../components/asset-grid'
 import { AssetList } from '../components/asset-list'
+import { AssetDataTable } from '../components/asset-data-table'
 import { AssetBatchActions } from '../components/asset-batch-actions'
 import { AssetImportExport } from '../components/asset-import-export'
 import { AssetUploader } from '../components/asset-uploader'
 import { useAssetStore, useGlobalAssets, useAssetStats } from '@/stores/asset-store'
-import { Loader2, Plus, Search, SlidersHorizontal, Grid3x3, List, Upload } from 'lucide-react'
+import type { AssetViewMode } from '@/stores/asset-store'
+import { Loader2, Plus, Search, SlidersHorizontal, Grid3x3, LayoutGrid, Table, Upload } from 'lucide-react'
+import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 
 export function AssetLibraryPage() {
@@ -64,8 +76,31 @@ export function AssetLibraryPage() {
   }
 
   // 切换视图模式
-  const toggleViewMode = () => {
-    setViewMode(viewMode === 'grid' ? 'list' : 'grid')
+  const cycleViewMode = () => {
+    // 循环切换: grid -> card -> table -> grid
+    const modes: AssetViewMode[] = ['grid', 'card', 'table']
+    const currentIndex = modes.indexOf(viewMode as AssetViewMode)
+    const nextIndex = (currentIndex + 1) % modes.length
+    setViewMode(modes[nextIndex])
+  }
+
+  // 设置特定视图模式
+  const handleSetViewMode = (mode: AssetViewMode) => {
+    setViewMode(mode)
+  }
+
+  // 获取视图模式标签
+  const getViewModeLabel = () => {
+    switch (viewMode) {
+      case 'grid':
+        return '网格视图'
+      case 'card':
+        return '卡片视图'
+      case 'table':
+        return '表格视图'
+      default:
+        return '网格视图'
+    }
   }
 
   // 重置筛选
@@ -99,19 +134,45 @@ export function AssetLibraryPage() {
             {/* 导入导出 */}
             <AssetImportExport />
 
-            {/* 视图切换 */}
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={toggleViewMode}
-              title={viewMode === 'grid' ? '切换到列表视图' : '切换到网格视图'}
-            >
-              {viewMode === 'grid' ? (
-                <List className="h-4 w-4" />
-              ) : (
+            {/* 视图切换 - 三个按钮 */}
+            <div className="flex items-center border rounded-md">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => handleSetViewMode('grid')}
+                className={cn(
+                  'rounded-none border-r h-9 w-9',
+                  viewMode === 'grid' && 'bg-accent'
+                )}
+                title="网格视图"
+              >
                 <Grid3x3 className="h-4 w-4" />
-              )}
-            </Button>
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => handleSetViewMode('card')}
+                className={cn(
+                  'rounded-none border-r h-9 w-9',
+                  viewMode === 'card' && 'bg-accent'
+                )}
+                title="卡片视图"
+              >
+                <LayoutGrid className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => handleSetViewMode('table')}
+                className={cn(
+                  'rounded-none h-9 w-9',
+                  viewMode === 'table' && 'bg-accent'
+                )}
+                title="表格视图"
+              >
+                <Table className="h-4 w-4" />
+              </Button>
+            </div>
 
             {/* 上传按钮 */}
             <Button onClick={handleUpload}>
@@ -185,10 +246,14 @@ export function AssetLibraryPage() {
           </div>
         ) : (
           <>
-            {viewMode === 'grid' ? (
+            {viewMode === 'grid' && (
               <AssetGrid assets={assets} onUpdate={handleRefresh} />
-            ) : (
+            )}
+            {viewMode === 'card' && (
               <AssetList assets={assets} onUpdate={handleRefresh} />
+            )}
+            {viewMode === 'table' && (
+              <AssetDataTable assets={assets} onUpdate={handleRefresh} />
             )}
           </>
         )}

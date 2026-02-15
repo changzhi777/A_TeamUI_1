@@ -1,6 +1,15 @@
+/**
+ * step2-format-selection
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { FileSpreadsheet, FileCode, FileText } from 'lucide-react'
+import { FileSpreadsheet, FileCode, FileText, File, FileType } from 'lucide-react'
 import type { TemplateType, ExportFormat } from '../../template-export-dialog'
 
 interface Step2_FormatSelectionProps {
@@ -40,6 +49,20 @@ export function Step2_FormatSelection({
       description: '专业排版，适合打印和分享',
       color: 'text-blue-800',
     },
+    {
+      id: 'md',
+      name: 'Markdown',
+      icon: FileType,
+      description: '文档工具兼容，适合 Notion/Obsidian',
+      color: 'text-purple-600',
+    },
+    {
+      id: 'pdf',
+      name: 'PDF',
+      icon: File,
+      description: '表格格式，适合打印和分享',
+      color: 'text-red-600',
+    },
   ] as const
 
   return (
@@ -48,7 +71,7 @@ export function Step2_FormatSelection({
         请选择导出格式（{templateType === 'blank' ? '空白向导' : '数据向导'}）
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {formats.map((format) => (
           <Card
             key={format.id}
@@ -59,9 +82,9 @@ export function Step2_FormatSelection({
           >
             <CardContent className="pt-6">
               <div className="flex flex-col items-center text-center space-y-3">
-                <format.icon className={`h-12 w-12 ${format.color}`} />
+                <format.icon className={`h-10 w-10 ${format.color}`} />
                 <div>
-                  <h3 className="font-semibold">{format.name}</h3>
+                  <h3 className="font-semibold text-sm">{format.name}</h3>
                   <p className="text-xs text-muted-foreground mt-1">
                     {format.description}
                   </p>

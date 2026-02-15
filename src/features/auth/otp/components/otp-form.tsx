@@ -1,3 +1,12 @@
+/**
+ * otp-form
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import React from 'react'
 import { useState } from 'react'
 import { z } from 'zod'
@@ -95,21 +104,24 @@ export function OtpForm({ className, type = 'verify', ...props }: OtpFormProps) 
       // 验证 OTP
       const result = await verifyOtp(data.otp)
 
-      setTimeout(() => {
+      setTimeout(async () => {
         setIsLoading(false)
 
         if (result.success) {
           toast.success('验证成功')
-          // 登录成功，跳转到首页
+          // 登录成功，跳转到首页 - 等待 login 完成
           if (user) {
-            login(user, {
+            await login(user, {
               accessToken: `mock_token_${user.id}_${Date.now()}`,
               refreshToken: `refresh_token_${user.id}_${Date.now()}`,
               expiresAt: Date.now() + 60 * 60 * 1000,
               rememberMe: false,
             })
           }
-          navigate({ to: '/projects' })
+          // 使用 setTimeout 确保状态已更新后再导航
+          setTimeout(() => {
+            navigate({ to: '/projects' })
+          }, 0)
         } else {
           toast.error(result.error || '验证码错误')
         }

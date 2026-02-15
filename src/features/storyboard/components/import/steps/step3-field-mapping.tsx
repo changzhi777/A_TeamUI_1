@@ -1,10 +1,21 @@
-import { useState, useEffect } from 'react'
+/**
+ * step3-field-mapping
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
+import { useState, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { CheckCircle2, AlertCircle } from 'lucide-react'
+import { CheckCircle2, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { useCustomFieldStore } from '@/stores/custom-field-store'
 import type { ImportResult } from '@/lib/import/template'
+import type { CustomFieldConfig } from '@/lib/types/api'
 
 interface Step3_FieldMappingProps {
   parsedData: ImportResult | null
@@ -12,10 +23,14 @@ interface Step3_FieldMappingProps {
   onMappingChange: (mapping: Record<string, string>) => void
   onNext: () => void
   onPrevious: () => void
+  projectId?: string
 }
 
-const SYSTEM_FIELDS = [
+// 基础系统字段
+const BASE_SYSTEM_FIELDS = [
   { value: 'shotNumber', label: '镜头编号' },
+  { value: 'seasonNumber', label: '季数' },
+  { value: 'episodeNumber', label: '集数' },
   { value: 'sceneNumber', label: '场次' },
   { value: 'shotSize', label: '景别' },
   { value: 'cameraMovement', label: '运镜方式' },
@@ -26,17 +41,46 @@ const SYSTEM_FIELDS = [
 ]
 
 const REQUIRED_FIELDS = ['shotNumber', 'sceneNumber']
+const INITIAL_VISIBLE_COUNT = 10  // 默认显示10列，避免用户需要频繁点击"显示更多"
 
-export function Step3_FieldMapping({ parsedData, fieldMapping, onMappingChange, onNext, onPrevious }: Step3_FieldMappingProps) {
+// Generate custom field options
+function getCustomFieldOptions(customFields: CustomFieldConfig[]) {
+  return customFields.map((field) => ({
+    value: `custom_${field.id}`,
+    label: `${field.name} (自定义)`,
+    isCustom: true,
+    field,
+  }))
+}
+
+export function Step3_FieldMapping({ parsedData, fieldMapping, onMappingChange, onNext, onPrevious, projectId }: Step3_FieldMappingProps) {
   const [currentMapping, setCurrentMapping] = useState<Record<string, string>>(fieldMapping)
   const [autoMappingApplied, setAutoMappingApplied] = useState(false)
+  const [showAllColumns, setShowAllColumns] = useState(false)
 
-  const fileColumns = parsedData?.data && parsedData.data.length > 0 ? Object.keys(parsedData.data[0]) : []
+  // Get custom fields for the project
+  const { getMergedFields } = useCustomFieldStore()
+  const customFields = useMemo(() => {
+    return projectId ? getMergedFields(projectId) : []
+  }, [projectId, getMergedFields])
+
+  // Combine system fields with custom field options
+  const systemFields = useMemo(() => {
+    const customOptions = getCustomFieldOptions(customFields)
+    return [...BASE_SYSTEM_FIELDS, ...customOptions]
+  }, [customFields])
+
+  // Use rawColumns from parser for original column names
+  const fileColumns = parsedData?.rawColumns || []
+  const visibleColumns = showAllColumns ? fileColumns : fileColumns.slice(0, INITIAL_VISIBLE_COUNT)
+  const hasMoreColumns = fileColumns.length > INITIAL_VISIBLE_COUNT
 
   const handleAutoMap = () => {
     const mapping: Record<string, string> = {}
     const fieldLabels: Record<string, string> = {
       'shotNumber': '镜头编号',
+      'seasonNumber': '季数',
+      'episodeNumber': '集数',
       'sceneNumber': '场次',
       'shotSize': '景别',
       'cameraMovement': '运镜方式',
@@ -46,11 +90,19 @@ export function Step3_FieldMapping({ parsedData, fieldMapping, onMappingChange, 
       'sound': '音效说明',
     }
 
-    fileColumns.forEach(column => {
+    // Add custom field labels
+    customFields.forEach((field) => {
+      fieldLabels[`custom_${field.id}`] = field.name
+    })
+
+    fileColumns.forEach((column) => {
       const lowerColumn = column.toLowerCase()
       for (const [field, label] of Object.entries(fieldLabels)) {
-        if (lowerColumn.includes(label.toLowerCase()) || 
-            lowerColumn.includes(field.toLowerCase())) {
+        if (
+          lowerColumn.includes(label.toLowerCase()) ||
+          lowerColumn.includes(field.toLowerCase()) ||
+          lowerColumn === label.toLowerCase()
+        ) {
           mapping[column] = field
           break
         }
@@ -70,7 +122,7 @@ export function Step3_FieldMapping({ parsedData, fieldMapping, onMappingChange, 
   }
 
   const isMappingComplete = () => {
-    return REQUIRED_FIELDS.every(field => 
+    return REQUIRED_FIELDS.every(field =>
       Object.values(currentMapping).includes(field)
     )
   }
@@ -106,7 +158,7 @@ export function Step3_FieldMapping({ parsedData, fieldMapping, onMappingChange, 
         <CardContent>
           <div className="space-y-4">
             <div className="flex items-center gap-4 flex-wrap">
-              {SYSTEM_FIELDS.map((field) => {
+              {systemFields.slice(0, 10).map((field) => {
                 const { isMapped, isRequired } = getFieldStatus(field.value)
                 return (
                   <div key={field.value} className="flex items-center gap-2">
@@ -118,20 +170,34 @@ export function Step3_FieldMapping({ parsedData, fieldMapping, onMappingChange, 
                       <div className="h-4 w-4" />
                     )}
                     <span className={`text-sm ${isRequired ? 'font-medium' : 'text-muted-foreground'}`}>
-                      {field.label}{isRequired ? ' *' : ''}
+                      {field.label}
+                      {isRequired ? ' *' : ''}
+                      {'isCustom' in field && field.isCustom ? ' (自定义)' : ''}
                     </span>
                   </div>
                 )
               })}
+              {systemFields.length > 10 && (
+                <span className="text-xs text-muted-foreground">
+                  +{systemFields.length - 10} 个自定义字段
+                </span>
+              )}
             </div>
 
             <div className="space-y-3">
-              <h4 className="text-sm font-medium">文件列映射</h4>
+              <div className="flex items-center justify-between">
+                <h4 className="text-sm font-medium">文件列映射</h4>
+                {hasMoreColumns && (
+                  <span className="text-xs text-muted-foreground">
+                    {visibleColumns.length} / {fileColumns.length} 列
+                  </span>
+                )}
+              </div>
               {fileColumns.length === 0 ? (
                 <p className="text-sm text-muted-foreground">未检测到文件列，请先验证文件</p>
               ) : (
                 <div className="space-y-3">
-                  {fileColumns.map((column) => (
+                  {visibleColumns.map((column) => (
                     <div key={column} className="flex items-center gap-3">
                       <div className="flex-1 text-sm min-w-[150px]">{column}</div>
                       <Select
@@ -150,9 +216,10 @@ export function Step3_FieldMapping({ parsedData, fieldMapping, onMappingChange, 
                         <SelectTrigger className="w-40">
                           <SelectValue placeholder="选择字段" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="max-h-64">
                           <SelectItem value="__none__">不映射</SelectItem>
-                          {SYSTEM_FIELDS.map((field) => (
+                          <SelectItem value="__skip__">跳过（不导入）</SelectItem>
+                          {systemFields.map((field) => (
                             <SelectItem key={field.value} value={field.value}>
                               {field.label}
                             </SelectItem>
@@ -161,6 +228,28 @@ export function Step3_FieldMapping({ parsedData, fieldMapping, onMappingChange, 
                       </Select>
                     </div>
                   ))}
+
+                  {/* 显示更多/收起按钮 */}
+                  {hasMoreColumns && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="w-full mt-2 text-muted-foreground hover:text-foreground"
+                      onClick={() => setShowAllColumns(!showAllColumns)}
+                    >
+                      {showAllColumns ? (
+                        <>
+                          <ChevronUp className="h-4 w-4 mr-1" />
+                          收起 ({fileColumns.length - INITIAL_VISIBLE_COUNT} 列)
+                        </>
+                      ) : (
+                        <>
+                          <ChevronDown className="h-4 w-4 mr-1" />
+                          显示更多 ({fileColumns.length - INITIAL_VISIBLE_COUNT} 列)
+                        </>
+                      )}
+                    </Button>
+                  )}
                 </div>
               )}
             </div>

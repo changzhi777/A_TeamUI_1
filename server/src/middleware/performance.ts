@@ -1,3 +1,12 @@
+/**
+ * performance
+ *
+ * @author 外星动物（常智）IoTchange
+ * @email 14455975@qq.com
+ * @copyright ©2026 IoTchange
+ * @version V0.1.0
+ */
+
 import type { Context, Next } from 'hono'
 import { logger } from '../utils/logger'
 
@@ -166,6 +175,12 @@ export function clearOldMetrics(age: number = 3600000): void {
  * Get performance summary
  */
 export function getPerformanceSummary(): {
+  summary: Record<string, ReturnType<typeof calculateStats> & { endpoint: string; totalRequests: number; slowRequests: number }>
+  totalRequests: number
+  totalSlowRequests: number
+  slowThreshold: number
+  timestamp: string
+} {
   const allMetrics = getAllMetrics()
   const summary: Record<string, ReturnType<typeof calculateStats>> = {}
 
